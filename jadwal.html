@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jadwal Pelajaran - QUARTRIX</title>
+  <link rel="icon" href="https://img1.pixhost.to/images/8789/641798512_nuxoffc.jpg" type="image/jpeg" />
+  <style>
+    /* Gaya sama seperti halaman utama, tapi disederhanakan untuk halaman ini */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #2e0854;
+      color: #e0d7f5;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      color: #d1b3ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #fff;
+    }
+
+    header {
+      background: #3a0f70;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 1rem;
+    }
+    .logo img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #a87fff;
+      user-select: none;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: #d9b3ff;
+      flex-grow: 1;
+    }
+    nav a {
+      margin-left: 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      padding: 3rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section#jadwal {
+      margin-top: 4rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    section#jadwal h2 {
+      color: #d1b3ff;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #3a0f70;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(58, 15, 112, 0.7);
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      color: #c9a7ff;
+    }
+    th {
+      background: #4a1a80;
+      color: #d1b3ff;
+    }
+    tr:nth-child(even) {
+      background: #2e0854;
+    }
+
+    footer {
+      background: #3a0f70;
+      text-align: center;
+      padding: 1.5rem 2rem;
+      color: #bfa6ff;
+      font-size: 0.9rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.4rem;
+      }
+      nav a {
+        margin-left: 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://img1.pixhost.to/images/8789/641798512_nuxoffc.jpg" alt="Logo QUARTRIX" />
+    </div>
+    <h1>QUARTRIX</h1>
+    <nav>
+      <a href="index.html">Beranda</a>  <!-- Link kembali ke halaman utama -->
+      <a href="jadwal.html">Jadwal</a>
+      <a href="siswa.html">Siswa</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="jadwal">
+      <h2>Jadwal Pelajaran</h2>
+      <table>
+        <tr>
+          <th>Hari</th>
+          <th>Mata Pelajaran</th>
+          <th>Waktu</th>
+        </tr>
+        <tr>
+          <td>Senin</td>
+          <td>PKWU<br>Kimia<br>Matematika Minat<br>Sejarah</td>
+          <td>08:15 - 09:45<br>10:15 - 11:40<br>12:30 - 13:50<br>13:50 - 15:00</td>
+        </tr>
+        <tr>
+          <td>Selasa</td>
+          <td>Bimbingan Konseling<br>Matematika Wajib<br>Penjaskes<br>Fisika<br>Bahasa Inggris</td>
+          <td>07:00 - 07:40<br>07:40 - 09:00<br>09:00 - 11:30<br>12:20 - 13:40<br>13:40 - 15:00</td>
+        </tr>
+        <tr>
+          <td>Rabu</td>
+          <td>Bahasa Indonesia<br>Matematika Minat<br>Seni Budaya<br>Biologi<br>Fisika</td>
+          <td>07:00 - 08:20<br>08:20 - 09:40<br>10:10 - 11:30<br>12:20 - 13:40<br>13:40 - 15:00</td>
+        </tr>
+        <tr>
+          <td>Kamis</td>
+          <td>Bahasa Jawa<br>Kimia<br>Biologi<br>Agama<br>Bahasa Indonesia</td>
+          <td>07:00 - 07:40<br>07:40 - 09:40<br>10:10 - 10:50<br>12:20 - 13:40<br>13:40 - 15:00</td>
+        </tr>
+        <tr>
+          <td>Jumat</td>
+          <td>Matematika Wajib<br>BMQ<br>PPKn</td>
+          <td>07:00 - 08:30<br>08:30 - 09:15<br>09:45 - 11:15</td>
+        </tr>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 QUARTRIX. Semua hak cipta dilindungi.
+  </footer>
+</body>
+</html>
