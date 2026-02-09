@@ -90,7 +90,7 @@
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(58, 15, 112, 0.7);
-      animation: fadeInDown 1s ease forwards;
+      animation: fadeInUp 1s ease forwards;
     }
     th, td {
       padding: 1rem;
@@ -119,6 +119,16 @@
       0% {
         opacity: 0;
         transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+     @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
       }
       100% {
         opacity: 1;
