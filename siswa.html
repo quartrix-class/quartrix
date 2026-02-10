@@ -81,39 +81,39 @@
       margin-bottom: 2rem;
       text-align: center;
     }
-    /* Ubah dari grid menjadi list vertikal */
-    .siswa-list {
-      list-style: none; /* Hapus bullet default */
-      padding: 0;
+    /* Ubah dari grid ke flexbox untuk satu baris horizontal tanpa wrap */
+    .siswa-grid {
       display: flex;
-      flex-direction: column; /* Vertikal */
-      gap: 1rem; /* Jarak antar item */
+      flex-wrap: nowrap; /* Tidak wrap ke baris baru */
+      gap: 1.5rem;
+      overflow-x: auto; /* Scroll horizontal jika tidak muat */
+      padding-bottom: 1rem; /* Ruang untuk scrollbar */
     }
-    .siswa-item {
+    .siswa-card {
       background: #3a0f70;
       padding: 1rem;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(58, 15, 112, 0.5);
       transition: transform 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 1rem; /* Jarak antara foto dan nama */
+      text-align: center;
+      flex-shrink: 0; /* Kartu tidak menyusut */
+      width: 150px; /* Lebar tetap untuk konsistensi */
     }
-    .siswa-item:hover {
-      transform: scale(1.02);
+    .siswa-card:hover {
+      transform: scale(1.05);
     }
-    .siswa-item img {
-      width: 80px; /* Lebih kecil untuk list */
-      height: 100px;
+    .siswa-card img {
+      width: 120px;
+      height: 160px;
       border-radius: 0;
       object-fit: cover;
+      margin-bottom: 0.5rem;
       box-shadow: 0 0 10px #a87fff;
     }
-    .siswa-item p {
+    .siswa-card p {
       color: #c9a7ff;
-      font-size: 1rem;
+      font-size: 0.9rem;
       margin: 0;
-      flex-grow: 1; /* Nama mengisi sisa ruang */
     }
 
     footer {
@@ -134,9 +134,15 @@
         margin-left: 1rem;
         font-size: 0.9rem;
       }
-      .siswa-item {
-        flex-direction: column; /* Stack vertikal di mobile */
-        text-align: center;
+      .siswa-card {
+        width: 120px; /* Lebih kecil di mobile */
+      }
+      .siswa-card img {
+        width: 100px;
+        height: 130px;
+      }
+      .siswa-card p {
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -158,144 +164,144 @@
   <main>
     <section id="siswa">
       <h2>Daftar Siswa</h2>
-      <ul class="siswa-list">
-        <li class="siswa-item">
+      <div class="siswa-grid">
+        <div class="siswa-card">
           <img src="https://img2.pixhost.to/images/5633/693404339_img_20260209_183246.jpg" alt="Foto Siswa 1">
           <p>AGUSTINE DYAH AYU RAHMADANI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404335_img_20260209_183132.jpg" alt="Foto Siswa 2">
           <p>AHMAD FAISHAL ZAUMAR</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404366_img_20260209_184302.jpg" alt="Foto Siswa 3">
           <p>ALANA GEIZEL FAEDAH ALAM</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404358_img_20260209_183936.jpg" alt="Foto Siswa 4">
           <p>ALYA NAFEEZA AZZAHRO</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404322_img_20260209_182627.jpg" alt="Foto Siswa 5">
           <p>ANNISA PRIMADITA MUSAFA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404331_img_20260209_182919.jpg" alt="Foto Siswa 6">
           <p>ARYA ISSYA MAHENDRA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404377_img_20260209_184614.jpg" alt="Foto Siswa 7">
           <p>BERLIANA FAIRUZ IZDIHAR</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404329_img_20260209_182825.jpg" alt="Foto Siswa 8">
           <p>CLEON ADLI DANENDRA OMAN</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404333_img_20260209_182958.jpg" alt="Foto Siswa 9">
           <p>EIVEL FLORAYSA NADINDA ARDYALOVA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404325_img_20260209_182704.jpg" alt="Foto Siswa 10">
           <p>EVELYN GABRIEL ECHA CARERA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404340_img_20260209_183342.jpg" alt="Foto Siswa 11">
           <p>EZHAR AIRLANGGA RISTANSYAH</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404361_img_20260209_184007.jpg" alt="Foto Siswa 12">
           <p>FALIA PUTRI ELLYZA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404364_img_20260209_184227.jpg" alt="Foto Siswa 13">
           <p>HANINDIA ASYAWA KAYNAHAYA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404349_img_20260209_183628.jpg" alt="Foto Siswa 14">
           <p>HANUNG ELYA PINANDITA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404346_img_20260209_183524.jpg" alt="Foto Siswa 15">
           <p>HELMY ARSYAD DARMAWAN</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404368_img_20260209_184404.jpg" alt="Foto Siswa 16">
           <p>HENDARSO WIRATMOKO</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404371_img_20260209_184445.jpg" alt="Foto Siswa 17">
           <p>JAGAD CAHYO ADY</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404352_img_20260209_183658.jpg" alt="Foto Siswa 18">
           <p>JESSICA AFA MARTANIA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404341_img_20260209_183409.jpg" alt="Foto Siswa 19">
           <p>KAYLA AMANDA SYAMSAFINA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404362_img_20260209_184036.jpg" alt="Foto Siswa 20">
           <p>KEVIN APRILIO</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404355_img_20260209_183827.jpg" alt="Foto Siswa 21">
           <p>LINTANG YULIDHA PUTRI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404343_img_20260209_183445.jpg" alt="Foto Siswa 22">
           <p>MUHAMMAD IBNU KHALDUN ALFAUZI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404320__storage_emulated_0_download_img_20260209_184730.jpg" alt="Foto Siswa 23">
           <p>NABIL MAHIDARA ARTANTO</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404334_img_20260209_183045.jpg" alt="Foto Siswa 24">
           <p>NABILA KIRANA CANTYA PUTRI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404347_img_20260209_183601.jpg" alt="Foto Siswa 25">
           <p>NADIA REYSSA IRVANA PUTRI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404327_img_20260209_182743.jpg" alt="Foto Siswa 26">
           <p>NATHANAEL ABIRA SETYO BUDI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404376_img_20260209_184525.jpg" alt="Foto Siswa 27">
           <p>NATHANIA NARESWARI BRAHMA PUTRI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404357_img_20260209_183901.jpg" alt="Foto Siswa 28">
           <p>NIDA ULHAQ NUR SYIFA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404379_img_20260209_184705.jpg" alt="Foto Siswa 29">
           <p>NISRINA MARYAM</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404367_img_20260209_184332.jpg" alt="Foto Siswa 30">
           <p>PHILLIPUS ADE MAHENDRA PUTRA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404336_img_20260209_183211.jpg" alt="Foto Siswa 31">
           <p>PRISYA NOVI ANGGRAENI</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404363_img_20260209_184107.jpg" alt="Foto Siswa 32">
           <p>RENITA ISNABILA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404354_img_20260209_183800.jpg" alt="Foto Siswa 33">
           <p>SEDYO SAKA PRATAMA</p>
-        </li>
-        <li class="siswa-item">
+        </div>
+        <div class="siswa-card">
           <img src="https://t2.pixhost.to/thumbs/5633/693404378_img_20260209_184644.jpg" alt="Foto Siswa 34">
           <p>SELLA RAHMA YUNANDA</p>
-        </li>
-      </ul>
+        </div>
+      </div>
     </section>
   </main>
 <footer>
