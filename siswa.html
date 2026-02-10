@@ -80,11 +80,13 @@
       color: #d1b3ff;
       margin-bottom: 2rem;
       text-align: center;
+      animation: fadeInDown 1s ease forwards;
     }
     .siswa-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 1.5rem;
+      animation: fadeInUp 1s ease forwards;
     }
     .siswa-card {
       background: #3a0f70;
@@ -118,6 +120,27 @@
       color: #bfa6ff;
       font-size: 0.9rem;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+         /* Animations */
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+     @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Responsive */
