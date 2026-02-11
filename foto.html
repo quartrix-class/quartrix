@@ -89,7 +89,7 @@ section#foto h2 {
 /* GRID FOTO */
 .foto-grid {
   display: grid;
-  grid-template-columns: 1fr; /* ✅ 1 foto = 1 baris */
+  grid-template-columns: 1fr; /* 1 foto per baris di semua perangkat */
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto; /* center */
@@ -112,9 +112,8 @@ section#foto h2 {
 
 .foto-card img {
   width: 100%;
-  height: auto;
-  max-height: 80vh;   /* ✅ besar tapi tidak kelewat layar */
-  object-fit: contain;
+  height: 90vh; /* Tinggi hampir 1 halaman (90% viewport height) untuk gambar besar */
+  object-fit: contain; /* Menjaga aspek rasio tanpa crop */
   border-radius: 12px;
 }
 
@@ -130,47 +129,43 @@ footer {
   text-align: center;
   padding: 1.5rem 2rem;
   color: #fff5e6;
-      font-size: 0.9rem;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-    }
+  font-size: 0.9rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+}
 
-         /* Animations */
-    @keyframes fadeInDown {
-      0% {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-     @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+/* Animations */
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.4rem;
-      }
-      nav a {
-        margin-left: 1rem;
-        font-size: 0.9rem;
-      }
-      .foto-grid {
-        /* Ubah ke grid-template-columns sama seperti daftar siswa di mobile: repeat(auto-fit, minmax(180px, 1fr)) */
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 20px; /* Ubah gap untuk konsistensi */
-      }
-    }
+/* Responsive */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+  nav a {
+    margin-left: 1rem;
+    font-size: 0.9rem;
+  }
+  /* Grid tetap 1 kolom, tidak diubah */
+}
   </style>
 </head>
 <body>
