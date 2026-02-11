@@ -8,108 +8,120 @@
   <style>
     /* Gaya sama seperti halaman utama, tapi disederhanakan untuk halaman ini */
     * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #2e0854;
-      color: #e0d7f5;
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    a {
-      color: #d1b3ff;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    a:hover {
-      color: #fff;
-    }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    header {
-      background: #3a0f70;
-      padding: 1.5rem 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      gap: 1rem;
-    }
-    .logo img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #a87fff;
-      user-select: none;
-    }
-    header h1 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      color: #d9b3ff;
-      flex-grow: 1;
-    }
-    nav a {
-      margin-left: 1.5rem;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #5a3e2b; /* coklat utama */
+  color: #fff5e6; /* krem terang */
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-    main {
-      flex: 1;
-      padding: 3rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+a {
+  color: #fff5e6;
+  text-decoration: none;
+  transition: 0.3s;
+}
 
-    section#jadwal {
-      margin-top: 4rem;
-      max-width: 1100px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    section#jadwal h2 {
-      color: #d1b3ff;
-      margin-bottom: 2rem;
-      text-align: center;
-      animation: fadeInDown 1s ease forwards;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #3a0f70;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(58, 15, 112, 0.7);
-      animation: fadeInUp 1s ease forwards;
-    }
-    th, td {
-      padding: 1rem;
-      text-align: left;
-      color: #c9a7ff;
-    }
-    th {
-      background: #4a1a80;
-      color: #d1b3ff;
-    }
-    tr:nth-child(even) {
-      background: #2e0854;
-    }
+a:hover {
+  color: #ffd2a6;
+}
 
-    footer {
-      background: #3a0f70;
-      text-align: center;
-      padding: 1.5rem 2rem;
-      color: #bfa6ff;
+/* HEADER */
+header {
+  background: #ff8c42; /* oranye */
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 1rem;
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+header h1 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  color: #fff5e6;
+  flex-grow: 1;
+}
+
+nav a {
+  margin-left: 1.5rem;
+  font-weight: 600;
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  padding: 3rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+section#jadwal {
+  margin-top: 4rem;
+}
+
+section#jadwal h2 {
+  color: #ffd2a6;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff5e6; /* krem */
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  color: #3e2c23; /* coklat gelap */
+}
+
+th {
+  background: #ff8c42; /* oranye */
+  color: white;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background: #f5e3d3; /* krem sedikit lebih gelap */
+}
+
+tr:hover {
+  background: #ffd2a6;
+  transition: 0.3s;
+}
+
+/* FOOTER */
+footer {
+  background: #3e2c23; /* coklat gelap */
+  text-align: center;
+  padding: 1.5rem 2rem;
+  color: #fff5e6;
       font-size: 0.9rem;
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
     }
