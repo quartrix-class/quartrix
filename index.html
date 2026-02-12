@@ -292,6 +292,12 @@
 .social-menu a:hover img {
   filter: invert(30%) sepia(80%) saturate(500%) hue-rotate(10deg);
 }
+    /* HILANGKAN SIMBOL DI SAMPING LOGO SOSIAL MEDIA */
+.social-menu a::before {
+  display: none !important;
+  content: none !important;
+}
+
 
 
     /* Animations */
