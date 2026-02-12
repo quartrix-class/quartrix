@@ -209,6 +209,46 @@
       transition: 0.3s ease;
       text-align: center;
     }
+    /* SOCIAL MEDIA DI MENU */
+.social-menu {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255,245,230,0.4);
+}
+
+.social-menu a {
+  width: 44px;
+  height: 44px;
+  background: rgba(255,245,230,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+}
+
+.social-menu a:hover {
+  background: #fff5e6;
+  transform: scale(1.15);
+}
+
+.social-menu img {
+  width: 22px;
+  height: 22px;
+  filter: invert(95%); /* putih */
+}
+
+.social-menu a:hover img {
+  filter: invert(30%) sepia(80%) saturate(500%) hue-rotate(10deg);
+}
+    /* HILANGKAN SIMBOL DI SAMPING LOGO SOSIAL MEDIA */
+.social-menu a::before {
+  display: none !important;
+  content: none !important;
+}
 
     .foto-card:hover {
       transform: translateY(-8px);
