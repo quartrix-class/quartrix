@@ -148,7 +148,11 @@ tampilJadwal(hariList[0], jadwalButtons.children[0]);
 
 
 /* TUGAS */
-let tugasData = JSON.parse(localStorage.getItem("tugasData")) || [];
+let tugasData = JSON.parse(localStorage.getItem("tugasData")) || [
+  { deskripsi: "Kerjakan soal matematika halaman 50", deadline: "2025-01-15" },
+  { deskripsi: "Buat resume buku yang dibaca", deadline: "2025-01-20" }
+]; // Tambahkan tugas default untuk testing
+
 function renderTugas(){
   tugasList.innerHTML="";
   tugasData.forEach(t=>{
@@ -158,13 +162,16 @@ function renderTugas(){
   });
   localStorage.setItem("tugasData",JSON.stringify(tugasData));
 }
-renderTugas();
+renderTugas(); // Pastikan dipanggil
 
 function tambahTugas(){
   if(role !== "admin") return;
+  const desc = tugasBaru.value.trim();
+  const dead = deadlineBaru.value;
+  if(!desc || !dead) return alert("Isi semua field!");
   tugasData.push({
-    deskripsi:tugasBaru.value,
-    deadline:deadlineBaru.value
+    deskripsi: desc,
+    deadline: dead
   });
   tugasBaru.value="";deadlineBaru.value="";
   renderTugas();
@@ -173,7 +180,10 @@ function tambahTugas(){
 
 /* TAMBAH SISWA */
 function tambahSiswa(){
-  siswaData.push({nama:namaBaru.value.toUpperCase(),absen:+absenBaru.value});
+  const nama = namaBaru.value.trim().toUpperCase();
+  const abs = +absenBaru.value;
+  if(!nama || !abs) return alert("Isi semua field!");
+  siswaData.push({nama, absen: abs});
   namaBaru.value="";absenBaru.value="";
   localStorage.setItem("siswaData",JSON.stringify(siswaData));
   alert("Siswa berhasil ditambahkan!");
