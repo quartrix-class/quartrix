@@ -54,6 +54,8 @@ button{cursor:pointer}
 #modalProfil{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:1000}
 .modal-content{background:#fff;border-radius:10px;padding:2rem;max-width:400px;width:90%;text-align:center}
 .modal-content input{margin:0.5rem 0;width:100%;padding:10px;border-radius:8px;border:1px solid #ccc}
+.modal-content label{display:block;text-align:left;margin-top:0.5rem;font-weight:600;color:#333}
+.modal-content .keterangan{font-size:0.8rem;color:#666;margin-bottom:0.5rem;text-align:left}
 .modal-content button{margin-top:1rem}
 .close-modal{position:absolute;top:10px;right:10px;background:#e74c3c;color:#fff;border:none;padding:5px 10px;border-radius:50%;cursor:pointer}
 footer{text-align:center;padding:1rem;background:#3e2c23}
@@ -112,10 +114,22 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   <div class="modal-content">
     <button class="close-modal" onclick="closeModal()">×</button>
     <h2>Edit Profil</h2>
+    <label for="editNama">Nama Lengkap</label>
+    <div class="keterangan">Masukkan nama lengkap Anda yang akan ditampilkan di dashboard.</div>
     <input id="editNama" placeholder="Nama Lengkap">
+    
+    <label for="editAbsen">Nomor Absen Baru</label>
+    <div class="keterangan">Masukkan nomor absen baru yang akan ditampilkan di dashboard (tidak mempengaruhi login).</div>
     <input id="editAbsen" type="number" placeholder="Nomor Absen Baru">
+    
+    <label for="editAbsenLogin">Absen Login Baru</label>
+    <div class="keterangan">Masukkan nomor absen baru untuk login ke akun ini. Gunakan absen ini saat login berikutnya.</div>
     <input id="editAbsenLogin" type="number" placeholder="Absen Login Baru (untuk login)">
+    
+    <label for="editFoto">Foto Profil</label>
+    <div class="keterangan">Upload foto baru (format gambar seperti JPG, PNG). Jika tidak diubah, foto lama tetap digunakan.</div>
     <input id="editFoto" type="file" accept="image/*">
+    
     <button onclick="simpanProfil()">Simpan</button>
   </div>
 </div>
@@ -243,7 +257,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
     /* SISWA DATA (untuk login, tapi tidak ditampilkan) */
     let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [];
-
+    
    /* JADWAL MENARIK */
     const jadwalData = [
      { hari: "Senin", mataPelajaran: "PKWU", waktu: "08:15 - 09:45" },
