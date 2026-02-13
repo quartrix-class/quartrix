@@ -119,6 +119,9 @@ info.innerText = role==="admin"
 if(role==="admin"){
   adminPanel.style.display="block";
   tambahTugasPanel.style.display="block";
+  console.log("Panel admin dan tugas ditampilkan"); // Debug
+} else {
+  console.log("Role bukan admin:", role); // Debug
 }
 
 /* SISWA DATA (untuk login, tapi tidak ditampilkan) */
@@ -197,13 +200,21 @@ onValue(tugasRef, (snapshot) => {
   const data = snapshot.val();
   tugasData = data ? Object.values(data) : [];
   renderTugas();
+  console.log("Tugas diperbarui:", tugasData); // Debug
 });
 
 function tambahTugas(){
-  if(role !== "admin") return;
+  console.log("Tombol tambah tugas diklik"); // Debug
+  if(role !== "admin") {
+    console.log("Role bukan admin:", role); // Debug
+    return;
+  }
   const desc = tugasBaru.value.trim();
   const dead = deadlineBaru.value;
-  if(!desc || !dead) return alert("Isi semua field!");
+  if(!desc || !dead) {
+    alert("Isi semua field!");
+    return;
+  }
   const newTugasRef = push(tugasRef);
   set(newTugasRef, {
     deskripsi: desc,
