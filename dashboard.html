@@ -177,7 +177,11 @@ if (!role || !namaLogin) {
 
 /* ================= DATA AKUN ================= */
 let akunData = JSON.parse(localStorage.getItem("akunData")) || [
-  { nama: "ADMIN", absen: "admin123", role: "admin" },
+  { nama: "ADMIN", absen: "admin123", role: "admin" }
+];
+
+// Daftar default siswa untuk ditambahkan jika belum ada
+const defaultSiswa = [
   { nama: "AGUSTINE DYAH AYU RAHMADANI", absen: "1", role: "siswa" },
   { nama: "AHMAD FAISHAL ZAUMAR", absen: "2", role: "siswa" },
   { nama: "ALANA GEIZEL FAEDAH ALAM", absen: "3", role: "siswa" },
@@ -213,6 +217,16 @@ let akunData = JSON.parse(localStorage.getItem("akunData")) || [
   { nama: "SEDYO SAKA PRATAMA", absen: "33", role: "siswa" },
   { nama: "SELLA RAHMA YUNANDA", absen: "34", role: "siswa" }
 ];
+
+// Tambahkan siswa default jika belum ada di akunData
+defaultSiswa.forEach(siswa => {
+  if (!akunData.some(a => a.absen === siswa.absen)) {
+    akunData.push(siswa);
+  }
+});
+
+// Simpan kembali ke localStorage
+localStorage.setItem("akunData", JSON.stringify(akunData));
 
 /* ================= DATA SISWA ================= */
 let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [
@@ -391,3 +405,4 @@ function logout() {
 
 </body>
 </html>
+
