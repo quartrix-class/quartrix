@@ -109,7 +109,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     <button class="close-modal" onclick="closeModal()">×</button>
     <h2>Edit Profil</h2>
     <input id="editNama" placeholder="Nama Lengkap">
-    <input id="editAbsen" type="number" placeholder="Nomor Absen">
+    <input id="editAbsen" type="number" placeholder="Nomor Absen Baru">
     <input id="editFoto" type="file" accept="image/*">
     <button onclick="simpanProfil()">Simpan</button>
   </div>
@@ -187,26 +187,40 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
     window.closeModal = () => modalProfil.style.display = "none";
 
-    window.simpanProfil = () => {
+    window.simpanProfil = async () => {
       const newNama = document.getElementById("editNama").value.trim();
       const newAbsen = document.getElementById("editAbsen").value;
       const fotoFile = document.getElementById("editFoto").files[0];
 
       if(!newNama || !newAbsen) return alert("Isi nama dan absen!");
 
+      // Cek apakah absen baru sudah digunakan
+      if(newAbsen !== profilData.absen) {
+        const checkRef = ref(db, 'siswa/' + newAbsen);
+        const snapshot = await get(checkRef);
+        if(snapshot.exists()) return alert("Absen sudah digunakan oleh siswa lain!");
+      }
+
       let fotoURL = profilData.fotoURL;
       if(fotoFile) {
         const reader = new FileReader();
         reader.onload = function(e) {
           fotoURL = e.target.result;
-          profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
-          set(profilRef, profilData);
-          updateProfilUI();
-          closeModal();
-          alert("Profil berhasil disimpan!");
+          updateProfil(newNama, newAbsen, fotoURL);
         };
         reader.readAsDataURL(fotoFile);
         return; // Tunggu reader selesai
+      }
+
+      updateProfil(newNama, newAbsen, fotoURL);
+    };
+
+    function updateProfil(newNama, newAbsen, fotoURL) {
+      // Hapus data lama jika absen berubah
+      if(newAbsen !== profilData.absen) {
+        remove(ref(db, 'siswa/' + profilData.absen));
+        remove(ref(db, 'tugasSelesai/' + profilData.absen));
+        localStorage.setItem("absen", newAbsen);
       }
 
       profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
@@ -256,151 +270,151 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       { hari: "Jumat", mataPelajaran: "BMQ", waktu: "08:30 - 09:15" },
       { hari: "Jumat", mataPelajaran: "PPKn", waktu: "09:45 - 11:15" }
     ];
-    
+
     const hariList = [...new Set(jadwalData.map(j => j.hari))]; 
-// Ambil daftar hari unik: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]
+    // Ambil daftar hari unik: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]
 
-const jadwalButtons = document.getElementById("jadwalButtons");
-const jadwalDetail = document.getElementById("jadwalDetail");
+    const jadwalButtons = document.getElementById("jadwalButtons");
+    const jadwalDetail = document.getElementById("jadwalDetail");
 
-hariList.forEach(h => {
-  const b = document.createElement("button");
-  b.textContent = h;
-  b.className = "hari-btn";
-  b.onclick = () => tampilJadwal(h, b);
-  jadwalButtons.appendChild(b);
-});
-
-function tampilJadwal(hari, btn) {
-  document.querySelectorAll(".hari-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  jadwalDetail.innerHTML = "";
-  jadwalData
-    .filter(j => j.hari === hari)
-    .forEach(j => {
-      const card = document.createElement("div");
-      card.className = "jadwal-card";
-      card.innerHTML = `
-        <div class="jadwal-mapel">${j.mataPelajaran}</div>
-        <div class="jadwal-waktu">${j.waktu}</div>
-      `;
-      jadwalDetail.appendChild(card);
+    hariList.forEach(h => {
+      const b = document.createElement("button");
+      b.textContent = h;
+      b.className = "hari-btn";
+      b.onclick = () => tampilJadwal(h, b);
+      jadwalButtons.appendChild(b);
     });
-}
 
-// auto buka hari pertama
-tampilJadwal(hariList[0], jadwalButtons.children[0]);
-
-/* TUGAS MENARIK DENGAN CHECKLIST */
-let tugasData = [];
-let tugasKeys = []; // Simpan key untuk hapus
-let tugasSelesai = {}; // Status selesai per tugas per siswa
-const tugasList = document.getElementById("tugasList");
-
-function renderTugas(){
-  tugasList.innerHTML="";
-  tugasData.forEach((t, index) => {
-    const card = document.createElement("div");
-    card.className = "tugas-card";
-    const isSelesai = tugasSelesai[tugasKeys[index]] || false;
-    card.innerHTML = `
-      <div class="tugas-mapel ${isSelesai ? 'tugas-selesai' : ''}">${t.mapel}</div>
-      <div class="tugas-desc ${isSelesai ? 'tugas-selesai' : ''}">${t.deskripsi}</div>
-      <div class="tugas-deadline ${isSelesai ? 'tugas-selesai' : ''}">Deadline: ${t.deadline}</div>
-      <div class="tugas-admin">
-        ${role !== "admin" ? `<input type="checkbox" class="checkbox" ${isSelesai ? 'checked' : ''} onchange="toggleSelesai('${tugasKeys[index]}', this.checked)">` : ''}
-      </div>
-    `;
-    if(role === "admin") {
-      const hapusBtn = document.createElement("button");
-      hapusBtn.textContent = "Hapus";
-      hapusBtn.className = "hapus-btn";
-      hapusBtn.onclick = () => hapusTugas(tugasKeys[index]);
-      card.querySelector('.tugas-admin').appendChild(hapusBtn);
+    function tampilJadwal(hari, btn) {
+      document.querySelectorAll(".hari-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      jadwalDetail.innerHTML = "";
+      jadwalData
+        .filter(j => j.hari === hari)
+        .forEach(j => {
+          const card = document.createElement("div");
+          card.className = "jadwal-card";
+          card.innerHTML = `
+            <div class="jadwal-mapel">${j.mataPelajaran}</div>
+            <div class="jadwal-waktu">${j.waktu}</div>
+          `;
+          jadwalDetail.appendChild(card);
+        });
     }
-    tugasList.appendChild(card);
-  });
-}
 
-// Load status selesai dari Firebase
-const selesaiRef = ref(db, 'tugasSelesai/' + absen);
-onValue(selesaiRef, (snapshot) => {
-  tugasSelesai = snapshot.val() || {};
-  renderTugas(); // Render ulang saat status berubah
-});
+    // auto buka hari pertama
+    tampilJadwal(hariList[0], jadwalButtons.children[0]);
 
-// Listen untuk perubahan tugas dari Firebase
-const tugasRef = ref(db, 'tugas');
-onValue(tugasRef, (snapshot) => {
-  const data = snapshot.val();
-  tugasData = data ? Object.values(data) : [];
-  tugasKeys = data ? Object.keys(data) : [];
-  renderTugas();
-  console.log("Tugas diperbarui:", tugasData);
-});
+    /* TUGAS MENARIK DENGAN CHECKLIST */
+    let tugasData = [];
+    let tugasKeys = []; // Simpan key untuk hapus
+    let tugasSelesai = {}; // Status selesai per tugas per siswa
+    const tugasList = document.getElementById("tugasList");
 
-// Event listener untuk tombol tambah tugas
-const btnTambahTugas = document.getElementById("btnTambahTugas");
-btnTambahTugas.addEventListener("click", function() {
-  console.log("Tombol tambah tugas diklik");
-  tambahTugas();
-});
+    function renderTugas(){
+      tugasList.innerHTML="";
+      tugasData.forEach((t, index) => {
+        const card = document.createElement("div");
+        card.className = "tugas-card";
+        const isSelesai = tugasSelesai[tugasKeys[index]] || false;
+        card.innerHTML = `
+          <div class="tugas-mapel ${isSelesai ? 'tugas-selesai' : ''}">${t.mapel}</div>
+          <div class="tugas-desc ${isSelesai ? 'tugas-selesai' : ''}">${t.deskripsi}</div>
+          <div class="tugas-deadline ${isSelesai ? 'tugas-selesai' : ''}">Deadline: ${t.deadline}</div>
+          <div class="tugas-admin">
+            ${role !== "admin" ? `<input type="checkbox" class="checkbox" ${isSelesai ? 'checked' : ''} onchange="toggleSelesai('${tugasKeys[index]}', this.checked)">` : ''}
+          </div>
+        `;
+        if(role === "admin") {
+          const hapusBtn = document.createElement("button");
+          hapusBtn.textContent = "Hapus";
+          hapusBtn.className = "hapus-btn";
+          hapusBtn.onclick = () => hapusTugas(tugasKeys[index]);
+          card.querySelector('.tugas-admin').appendChild(hapusBtn);
+        }
+        tugasList.appendChild(card);
+      });
+    }
 
-function tambahTugas(){
-  console.log("Fungsi tambahTugas dipanggil");
-  if(role !== "admin") {
-    console.log("Role bukan admin:", role);
-    alert("Hanya admin yang bisa menambah tugas!");
-    return;
-  }
-  const mapelBaru = document.getElementById("mapelBaru");
-  const tugasBaru = document.getElementById("tugasBaru");
-  const deadlineBaru = document.getElementById("deadlineBaru");
-  const mapel = mapelBaru.value.trim();
-  const desc = tugasBaru.value.trim();
-  const dead = deadlineBaru.value;
-  if(!mapel || !desc || !dead) {
-    alert("Isi semua field!");
-    return;
-  }
-  const newTugasRef = push(tugasRef);
-  set(newTugasRef, {
-    mapel: mapel,
-    deskripsi: desc,
-    deadline: dead
-  });
-  mapelBaru.value="";tugasBaru.value="";deadlineBaru.value="";
-  alert("Tugas berhasil dipublish kepada semua siswa!");
-}
+    // Load status selesai dari Firebase
+    const selesaiRef = ref(db, 'tugasSelesai/' + absen);
+    onValue(selesaiRef, (snapshot) => {
+      tugasSelesai = snapshot.val() || {};
+      renderTugas(); // Render ulang saat status berubah
+    });
 
-function hapusTugas(key) {
-  if(role !== "admin") return;
-  if(confirm("Yakin ingin hapus tugas ini?")) {
-    remove(ref(db, 'tugas/' + key));
-    alert("Tugas berhasil dihapus!");
-  }
-}
+    // Listen untuk perubahan tugas dari Firebase
+    const tugasRef = ref(db, 'tugas');
+    onValue(tugasRef, (snapshot) => {
+      const data = snapshot.val();
+      tugasData = data ? Object.values(data) : [];
+      tugasKeys = data ? Object.keys(data) : [];
+      renderTugas();
+      console.log("Tugas diperbarui:", tugasData);
+    });
 
-window.toggleSelesai = (key, checked) => {
-  if(role === "admin") return;
-  tugasSelesai[key] = checked;
-  set(selesaiRef, tugasSelesai);
-  renderTugas(); // Render ulang untuk efek visual
-};
+    // Event listener untuk tombol tambah tugas
+    const btnTambahTugas = document.getElementById("btnTambahTugas");
+    btnTambahTugas.addEventListener("click", function() {
+      console.log("Tombol tambah tugas diklik");
+      tambahTugas();
+    });
 
-/* TAMBAH SISWA */
-const namaBaru = document.getElementById("namaBaru");
-const absenBaru = document.getElementById("absenBaru");
-const btnTambahSiswa = document.getElementById("btnTambahSiswa");
-btnTambahSiswa.addEventListener("click", function() {
-  const nama = namaBaru.value.trim().toUpperCase();
-  const abs = +absenBaru.value;
-  if(!nama || !abs) return alert("Isi semua field!");
-  siswaData.push({nama, absen: abs});
-  namaBaru.value="";absenBaru.value="";
-  localStorage.setItem("siswaData",JSON.stringify(siswaData));
-  alert("Siswa berhasil ditambahkan!");
-});
+    function tambahTugas(){
+      console.log("Fungsi tambahTugas dipanggil");
+      if(role !== "admin") {
+        console.log("Role bukan admin:", role);
+        alert("Hanya admin yang bisa menambah tugas!");
+        return;
+      }
+      const mapelBaru = document.getElementById("mapelBaru");
+      const tugasBaru = document.getElementById("tugasBaru");
+      const deadlineBaru = document.getElementById("deadlineBaru");
+      const mapel = mapelBaru.value.trim();
+      const desc = tugasBaru.value.trim();
+      const dead = deadlineBaru.value;
+      if(!mapel || !desc || !dead) {
+        alert("Isi semua field!");
+        return;
+      }
+      const newTugasRef = push(tugasRef);
+      set(newTugasRef, {
+        mapel: mapel,
+        deskripsi: desc,
+        deadline: dead
+      });
+      mapelBaru.value="";tugasBaru.value="";deadlineBaru.value="";
+      alert("Tugas berhasil dipublish kepada semua siswa!");
+    }
+
+    function hapusTugas(key) {
+      if(role !== "admin") return;
+      if(confirm("Yakin ingin hapus tugas ini?")) {
+        remove(ref(db, 'tugas/' + key));
+        alert("Tugas berhasil dihapus!");
+      }
+    }
+
+    window.toggleSelesai = (key, checked) => {
+      if(role === "admin") return;
+      tugasSelesai[key] = checked;
+      set(selesaiRef, tugasSelesai);
+      renderTugas(); // Render ulang untuk efek visual
+    };
+
+    /* TAMBAH SISWA */
+    const namaBaru = document.getElementById("namaBaru");
+    const absenBaru = document.getElementById("absenBaru");
+    const btnTambahSiswa = document.getElementById("btnTambahSiswa");
+    btnTambahSiswa.addEventListener("click", function() {
+      const nama = namaBaru.value.trim().toUpperCase();
+      const abs = +absenBaru.value;
+      if(!nama || !abs) return alert("Isi semua field!");
+      siswaData.push({nama, absen: abs});
+      namaBaru.value="";absenBaru.value="";
+      localStorage.setItem("siswaData",JSON.stringify(siswaData));
+      alert("Siswa berhasil ditambahkan!");
+    });
 
     /* LOGOUT */
     const logoutBtn = document.querySelector(".logout");
@@ -413,8 +427,3 @@ btnTambahSiswa.addEventListener("click", function() {
 
 </body>
 </html>
-
-
-
-
-
