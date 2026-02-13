@@ -67,7 +67,17 @@ function tambahSiswa(){
   nama.value = "";
   foto.value = "";
 }
+  if (role === "siswa") {
+  info.innerText =
+    "Selamat datang, " +
+    localStorage.getItem("nama") +
+    " (Absen " +
+    localStorage.getItem("absen") +
+    ")";
+}
+
 </script>
 
 </body>
 </html>
+
