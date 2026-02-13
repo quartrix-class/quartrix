@@ -140,6 +140,21 @@
   </div>
 
   <div class="card">
+    <h2>Jadwal Pelajaran</h2>
+    <ul id="jadwalList"></ul>
+  </div>
+
+  <div class="card">
+    <h2>Daftar Tugas</h2>
+    <ul id="tugasList"></ul>
+    <div id="tambahTugasPanel" style="display:none; margin-top:1rem;">
+      <input type="text" id="tugasBaru" placeholder="Deskripsi Tugas">
+      <input type="date" id="deadlineBaru" placeholder="Deadline">
+      <button onclick="tambahTugas()">Tambah Tugas</button>
+    </div>
+  </div>
+
+  <div class="card">
     <h2>Daftar Siswa</h2>
     <ul id="siswaList"></ul>
   </div>
@@ -175,15 +190,35 @@ let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [
   { nama: "ARYA ISSYA MAHENDRA", absen: 6 }
 ];
 
+/* ================= DATA JADWAL ================= */
+let jadwalData = JSON.parse(localStorage.getItem("jadwalData")) || [
+  { hari: "Senin", mataPelajaran: "Matematika", waktu: "08:00-09:00" },
+  { hari: "Senin", mataPelajaran: "Bahasa Indonesia", waktu: "09:00-10:00" },
+  { hari: "Selasa", mataPelajaran: "IPA", waktu: "08:00-09:00" },
+  { hari: "Selasa", mataPelajaran: "IPS", waktu: "09:00-10:00" },
+  { hari: "Rabu", mataPelajaran: "Bahasa Inggris", waktu: "08:00-09:00" },
+  { hari: "Rabu", mataPelajaran: "Seni Budaya", waktu: "09:00-10:00" }
+];
+
+/* ================= DATA TUGAS ================= */
+let tugasData = JSON.parse(localStorage.getItem("tugasData")) || [
+  { deskripsi: "Kerjakan soal matematika halaman 50", deadline: "2025-01-15" },
+  { deskripsi: "Buat resume buku yang dibaca", deadline: "2025-01-20" }
+];
+
 /* ================= ELEMENT ================= */
 const info = document.getElementById("info");
 const adminPanel = document.getElementById("adminPanel");
 const siswaList = document.getElementById("siswaList");
+const jadwalList = document.getElementById("jadwalList");
+const tugasList = document.getElementById("tugasList");
+const tambahTugasPanel = document.getElementById("tambahTugasPanel");
 
 /* ================= INFO USER ================= */
 if (role === "admin") {
   info.innerText = "Anda login sebagai ADMIN";
   adminPanel.style.display = "block";
+  tambahTugasPanel.style.display = "block";
 } else {
   info.innerText = `Selamat datang, ${namaLogin} (Absen ${absenLogin})`;
 }
@@ -203,6 +238,34 @@ function renderSiswa() {
 }
 
 renderSiswa();
+
+/* ================= RENDER JADWAL ================= */
+function renderJadwal() {
+  jadwalList.innerHTML = "";
+  jadwalData.forEach(j => {
+    const li = document.createElement("li");
+    li.innerText = `${j.hari} — ${j.mataPelajaran} (${j.waktu})`;
+    jadwalList.appendChild(li);
+  });
+
+  localStorage.setItem("jadwalData", JSON.stringify(jadwalData));
+}
+
+renderJadwal();
+
+/* ================= RENDER TUGAS ================= */
+function renderTugas() {
+  tugasList.innerHTML = "";
+  tugasData.forEach(t => {
+    const li = document.createElement("li");
+    li.innerText = `${t.deskripsi} — Deadline: ${t.deadline}`;
+    tugasList.appendChild(li);
+  });
+
+  localStorage.setItem("tugasData", JSON.stringify(tugasData));
+}
+
+renderTugas();
 
 /* ================= TAMBAH SISWA (ADMIN) ================= */
 function tambahSiswa() {
@@ -230,6 +293,29 @@ function tambahSiswa() {
 
   renderSiswa();
   alert("Siswa berhasil ditambahkan & bisa login");
+}
+
+/* ================= TAMBAH TUGAS (ADMIN) ================= */
+function tambahTugas() {
+  if (role !== "admin") return;
+
+  const deskripsi = document.getElementById("tugasBaru").value.trim();
+  const deadline = document.getElementById("deadlineBaru").value.trim();
+
+  if (!deskripsi || !deadline) {
+    alert("Deskripsi dan deadline wajib diisi");
+    return;
+  }
+
+  tugasData.push({ deskripsi: deskripsi, deadline: deadline });
+
+  localStorage.setItem("tugasData", JSON.stringify(tugasData));
+
+  document.getElementById("tugasBaru").value = "";
+  document.getElementById("deadlineBaru").value = "";
+
+  renderTugas();
+  alert("Tugas berhasil ditambahkan");
 }
 
 /* ================= LOGOUT ================= */
