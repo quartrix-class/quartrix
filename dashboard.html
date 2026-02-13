@@ -44,15 +44,15 @@ button{cursor:pointer}
 .btn-menarik:hover{background:linear-gradient(45deg,#ff6b35,#e55a2b);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,140,66,0.6)}
 .btn-menarik:active{transform:translateY(0);box-shadow:0 2px 10px rgba(255,140,66,0.4)}
 
-  .logo img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      user-select: none;
-    }
-  
+.logo img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  user-select: none;
+}
+
 /* TUGAS MENARIK */
 .tugas-card{background:#f9f9f9;border:1px solid #ddd;border-radius:10px;padding:1rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.5rem}
 .tugas-mapel{font-weight:700;color:#ff8c42;font-size:1.1rem}
@@ -79,6 +79,10 @@ button{cursor:pointer}
 #infoText{font-size:1.2rem;font-weight:700;color:#ff8c42;text-shadow:1px 1px 2px rgba(0,0,0,0.3);animation:fadeIn 1s ease-in}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 footer{text-align:center;padding:1rem;background:#3e2c23}
+
+/* DAFTAR SISWA */
+#daftarSiswa ul{list-style:none;padding:0}
+#daftarSiswa li{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #ddd}
 </style>
 </head>
 
@@ -111,6 +115,8 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   <input id="absenLama" type="number" placeholder="Absen Lama">
   <input id="absenBaruAdmin" type="number" placeholder="Absen Baru">
   <button id="btnUbahAbsen" class="btn-menarik">🔄 Ubah Absen</button>
+  <h2>Daftar Siswa (Akun Login)</h2>
+  <div id="daftarSiswa"></div>
 </div>
 
 <div class="card">
@@ -255,32 +261,42 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       }
 
       updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL);
-    };
+};
 
-    function updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL) {
-      // Update profil Firebase (absen tetap untuk tampilan)
-      profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
-      set(profilRef, profilData);
-      updateProfilUI();
+function updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL) {
+  // Update profil Firebase (absen tetap untuk tampilan)
+  profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
+  set(profilRef, profilData);
+  updateProfilUI();
 
-      // Update absen login di localStorage
-      localStorage.setItem("absen", newAbsenLogin);
-      localStorage.setItem("nama", newNama); // Update nama juga jika berubah
+  // Update absen login di localStorage
+  localStorage.setItem("absen", newAbsenLogin);
+  localStorage.setItem("nama", newNama); // Update nama juga jika berubah
 
-      closeModal();
-      alert("Profil berhasil disimpan!");
-    };
+  closeModal();
+  alert("Profil berhasil disimpan!");
+};
 
-    /* ADMIN */
+/* ADMIN */
 const adminPanel = document.getElementById("adminPanel");
 const tambahTugasPanel = document.getElementById("tambahTugasPanel");
 if(role==="admin"){
   adminPanel.style.display="block";
   tambahTugasPanel.style.display="block";
   editProfilBtn.style.display = "none"; // Admin tidak edit profil
+  renderDaftarSiswa(); // Render daftar siswa untuk admin
   console.log("Panel admin dan tugas ditampilkan untuk role:", role);
 } else {
   console.log("Role bukan admin, panel tidak ditampilkan. Role saat ini:", role);
+}
+
+function renderDaftarSiswa() {
+  const daftarSiswaDiv = document.getElementById("daftarSiswa");
+  daftarSiswaDiv.innerHTML = "<ul>";
+  siswaData.forEach(siswa => {
+    daftarSiswaDiv.innerHTML += `<li><span>Nama: ${siswa.nama}</span> <span>Absen/Password: ${siswa.absen}</span></li>`;
+  });
+  daftarSiswaDiv.innerHTML += "</ul>";
 }
 
 /* SISWA DATA (untuk login, tapi tidak ditampilkan) */
@@ -454,6 +470,7 @@ btnTambahSiswa.addEventListener("click", function() {
   siswaData.push({nama, absen: abs});
   namaBaru.value="";absenBaru.value="";
   localStorage.setItem("siswaData",JSON.stringify(siswaData));
+  if(role === "admin") renderDaftarSiswa(); // Update daftar jika admin
   alert("Siswa berhasil ditambahkan!");
 });
 
@@ -470,6 +487,7 @@ btnUbahAbsen.addEventListener("click", function() {
   if(siswaIndex === -1) return alert("Siswa dengan absen lama tidak ditemukan!");
   siswaData[siswaIndex].absen = baru;
   localStorage.setItem("siswaData", JSON.stringify(siswaData));
+  if(role === "admin") renderDaftarSiswa(); // Update daftar jika admin
   alert("Absen siswa berhasil diubah!");
   absenLama.value="";absenBaruAdmin.value="";
 });
@@ -485,7 +503,3 @@ btnUbahAbsen.addEventListener("click", function() {
 
 </body>
 </html>
-
-
-
-
