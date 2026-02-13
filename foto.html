@@ -2,6 +2,13 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
+
+  <script>
+  if (localStorage.getItem("isLogin") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Foto Kebersamaan - QUARTRIX</title>
   <link rel="icon" href="https://i.ibb.co.com/7xxVWwH7/IMG-8428.png" type="image/jpeg" />
@@ -458,6 +465,14 @@
       hamburger.classList.toggle('active');
       navMenu.classList.toggle('active');
     });
+
+     const loginBtn = document.getElementById("loginBtn");
+
+  if (localStorage.getItem("isLogin") === "true") {
+    const nama = localStorage.getItem("nama") || "Akun";
+    loginBtn.textContent = nama;
+    loginBtn.href = "#";
+  }
   </script>
 </body>
 </html>
