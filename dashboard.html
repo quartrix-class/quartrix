@@ -120,7 +120,6 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
   import { getDatabase, ref, set, onValue, push, remove, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
   import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-  import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
   // Config Firebase Anda
   const firebaseConfig = {
@@ -137,7 +136,6 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const auth = getAuth(app);
-  const storage = getStorage(app);
 
   // Login anonymous secara otomatis
   signInAnonymously(auth)
@@ -187,7 +185,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
     window.closeModal = () => modalProfil.style.display = "none";
 
-    window.simpanProfil = async () => {
+    window.simpanProfil = () => {
       const newNama = document.getElementById("editNama").value.trim();
       const newAbsen = document.getElementById("editAbsen").value;
       const fotoFile = document.getElementById("editFoto").files[0];
@@ -196,15 +194,17 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
       let fotoURL = profilData.fotoURL;
       if(fotoFile) {
-        try {
-          const fotoRef = storageRef(storage, 'profil/' + absen + '.jpg');
-          await uploadBytes(fotoRef, fotoFile);
-          fotoURL = await getDownloadURL(fotoRef);
-        } catch (error) {
-          console.error("Error upload foto:", error);
-          alert("Gagal upload foto. Coba lagi atau gunakan foto lain.");
-          return;
-        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          fotoURL = e.target.result;
+          profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
+          set(profilRef, profilData);
+          updateProfilUI();
+          closeModal();
+          alert("Profil berhasil disimpan!");
+        };
+        reader.readAsDataURL(fotoFile);
+        return; // Tunggu reader selesai
       }
 
       profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
@@ -393,5 +393,6 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
 </body>
 </html>
+
 
 
