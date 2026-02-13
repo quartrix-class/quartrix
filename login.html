@@ -1,67 +1,162 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login - QUARTRIX</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - QUARTRIX</title>
+  <link rel="icon" href="https://i.ibb.co.com/7xxVWwH7/IMG-8428.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #5a3e2b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3e2c23;
+    }
+
+    .login-box {
+      background: #fff5e6;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      animation: fadeIn 0.8s ease;
+    }
+
+    .login-box h1 {
+      text-align: center;
+      margin-bottom: 1.8rem;
+      color: #5a3e2b;
+      letter-spacing: 2px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      background: #ff8c42;
+      color: #fff5e6;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+
+    .login-box button:hover {
+      opacity: .9;
+    }
+
+    .note {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      text-align: center;
+      color: #5a3e2b;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      font-size: 0.85rem;
+      margin-top: .5rem;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="login-container">
-  <h2>Login QUARTRIX</h2>
+<div class="login-box">
+  <h1>LOGIN</h1>
 
-  <label>Username / Absen</label>
-  <input type="text" id="username" placeholder="admin / nomor absen">
+  <input type="text" id="username" placeholder="Nama Lengkap / admin">
+  <input type="password" id="password" placeholder="Absen / admin123">
 
-  <label>Password</label>
-  <input type="password" id="password" placeholder="password">
+  <button onclick="login()">Masuk</button>
 
-  <button onclick="login()">Login</button>
+  <p class="error" id="errorMsg">Username atau password salah</p>
 
-  <div class="admin-link" onclick="fillAdmin()">Login sebagai Admin</div>
+  <p class="note">
+    Siswa: Username = Nama Lengkap<br>
+    Password = Nomor Absen
+  </p>
 </div>
 
 <script>
-const adminAccount = {
-  username: "admin",
-  password: "quartrix123"
-};
-
-const siswa = [
-  { nama: "Ahmad Rizki Pratama", absen: "1" },
-  { nama: "Bima Alvaro Putra", absen: "2" },
-  { nama: "Citra Ayu Lestari", absen: "3" }
+/* ===============================
+   DATA SISWA
+================================ */
+const siswaData = JSON.parse(localStorage.getItem("siswaData")) || [
+  { nama: "AGUSTINE DYAH AYU RAHMADANI", absen: 1 },
+  { nama: "AHMAD FAISHAL ZAUMAR", absen: 2 },
+  { nama: "ALANA GEIZEL FAEDAH ALAM", absen: 3 },
+  { nama: "ALYA NAFEEZA AZZAHRO", absen: 4 },
+  { nama: "ANNISA PRIMADITA MUSAFA", absen: 5 },
+  { nama: "ARYA ISSYA MAHENDRA", absen: 6 }
 ];
 
+/* ===============================
+   LOGIN FUNCTION
+================================ */
 function login() {
-  const user = username.value.trim().toLowerCase();
-  const pass = password.value.trim();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorMsg = document.getElementById("errorMsg");
 
-  /* LOGIN ADMIN */
-  if (user === adminAccount.username && pass === adminAccount.password) {
+  errorMsg.style.display = "none";
+
+  /* ADMIN */
+  if (username === "admin" && password === "admin123") {
     localStorage.setItem("role", "admin");
+    localStorage.setItem("nama", "ADMIN");
+    localStorage.setItem("absen", "-");
     window.location.href = "dashboard.html";
     return;
   }
 
-  /* LOGIN SISWA */
-  const found = siswa.find(
-    s => s.nama.toLowerCase() === user && s.absen === pass
+  /* SISWA */
+  const siswa = siswaData.find(
+    s => s.nama === username.toUpperCase() && s.absen == password
   );
 
-  if (found) {
+  if (siswa) {
     localStorage.setItem("role", "siswa");
-    localStorage.setItem("nama", found.nama);
-    localStorage.setItem("absen", found.absen);
+    localStorage.setItem("nama", siswa.nama);
+    localStorage.setItem("absen", siswa.absen);
     window.location.href = "dashboard.html";
-    return;
+  } else {
+    errorMsg.style.display = "block";
   }
-
-  alert("Nama atau absen salah ❌");
 }
 </script>
 
 </body>
 </html>
-
