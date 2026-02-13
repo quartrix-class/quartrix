@@ -94,36 +94,47 @@
       cursor:pointer;
     }
 
-    /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fff5e6; /* krem */
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-      animation: fadeInUp 1s ease forwards;
+    /* JADWAL BUTTONS */
+    #jadwalButtons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
-    th, td {
-      padding: 1rem;
-      text-align: left;
-      color: #3e2c23; /* coklat gelap */
-    }
-
-    th {
-      background: #ff8c42; /* oranye */
-      color: white;
+    .hari-btn {
+      background: #ff8c42;
+      color: #fff5e6;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    tr:nth-child(even) {
-      background: #f5e3d3; /* krem sedikit lebih gelap */
+    .hari-btn:hover {
+      background: #e67e22;
     }
 
-    tr:hover {
-      background: #ffd2a6;
-      transition: 0.3s;
+    .hari-btn.active {
+      background: #3e2c23;
+    }
+
+    /* JADWAL DETAIL */
+    #jadwalDetail {
+      display: none;
+    }
+
+    #jadwalDetail ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #jadwalDetail li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      font-weight: 600;
     }
 
     ul{
@@ -185,14 +196,8 @@
 
   <div class="card">
     <h2>Jadwal Pelajaran</h2>
-    <table id="jadwalTable">
-      <tr>
-        <th>Hari</th>
-        <th>Mata Pelajaran</th>
-        <th>Waktu</th>
-      </tr>
-      <!-- Jadwal akan dirender di sini -->
-    </table>
+    <div id="jadwalButtons"></div>
+    <div id="jadwalDetail"></div>
   </div>
 
   <div class="card">
@@ -482,4 +487,5 @@ function logout() {
 
 </body>
 </html>
+
 
