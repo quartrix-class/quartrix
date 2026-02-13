@@ -15,25 +15,39 @@ body {
 }
 
 /* =========================
-   LOGIN PAGE
+   LOGIN & DASHBOARD CONTAINER
 ========================= */
-.login-container {
+.login-container,
+.dashboard-container {
   background: #fff5e6;
   max-width: 380px;
   margin: 90px auto;
   padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
   animation: fadeUp 0.8s ease;
 }
 
-.login-container h2 {
+/* =========================
+   HEADINGS
+========================= */
+.login-container h2,
+.dashboard h1 {
   text-align: center;
   color: #3e2c23;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   letter-spacing: 1px;
 }
 
+.dashboard p {
+  text-align: center;
+  color: #5a3e2b;
+  font-weight: 500;
+}
+
+/* =========================
+   FORM
+========================= */
 label {
   font-size: 14px;
   color: #3e2c23;
@@ -42,12 +56,12 @@ label {
 
 input {
   width: 100%;
-  padding: 11px;
+  padding: 12px;
   margin: 8px 0 16px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #d8c2ad;
-  outline: none;
   background: #fff;
+  outline: none;
   transition: 0.3s;
 }
 
@@ -56,12 +70,14 @@ input:focus {
   box-shadow: 0 0 0 2px rgba(255,140,66,0.25);
 }
 
-/* BUTTON */
+/* =========================
+   BUTTON (SAMA SEMUA)
+========================= */
 button {
   width: 100%;
   padding: 12px;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   background: linear-gradient(135deg, #ff8c42, #ff6b1a);
   color: #fff5e6;
   font-size: 15px;
@@ -72,11 +88,13 @@ button {
 }
 
 button:hover {
-  transform: scale(1.04);
   background: #3e2c23;
+  transform: scale(1.05);
 }
 
-/* ADMIN LINK */
+/* =========================
+   ADMIN LINK
+========================= */
 .admin-link {
   text-align: center;
   font-size: 13px;
@@ -90,13 +108,8 @@ button:hover {
   text-decoration: underline;
 }
 
-/* HIDDEN */
-.hidden {
-  display: none;
-}
-
 /* =========================
-   DASHBOARD
+   DASHBOARD NAVBAR
 ========================= */
 .navbar {
   background: linear-gradient(135deg, #ff8c42, #ff6b1a);
@@ -104,22 +117,19 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
 }
 
 .navbar span {
   font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .navbar button {
   width: auto;
-  padding: 8px 16px;
+  padding: 8px 18px;
   background: #fff5e6;
   color: #3e2c23;
-  border-radius: 10px;
-  font-size: 14px;
-  box-shadow: none;
+  border-radius: 12px;
 }
 
 .navbar button:hover {
@@ -127,33 +137,32 @@ button:hover {
   color: #fff5e6;
 }
 
-/* DASHBOARD CONTENT */
+/* =========================
+   DASHBOARD CONTENT
+========================= */
 .dashboard {
-  padding: 40px 25px;
-  text-align: center;
-}
-
-.dashboard h1 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-.dashboard p {
-  opacity: 0.9;
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 35px;
+  background: #fff5e6;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+  animation: fadeUp 0.8s ease;
 }
 
 /* MENU CARD */
 .menu {
   margin-top: 30px;
+  text-align: center;
 }
 
 .menu a {
   display: inline-block;
   margin: 12px;
   padding: 14px 22px;
-  background: #fff5e6;
-  color: #3e2c23;
-  border-radius: 14px;
+  background: #ff8c42;
+  color: #fff5e6;
+  border-radius: 16px;
   text-decoration: none;
   font-weight: 600;
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
@@ -161,9 +170,15 @@ button:hover {
 }
 
 .menu a:hover {
-  background: #ff8c42;
-  color: #fff5e6;
+  background: #3e2c23;
   transform: translateY(-4px);
+}
+
+/* =========================
+   UTIL
+========================= */
+.hidden {
+  display: none;
 }
 
 /* =========================
@@ -172,7 +187,7 @@ button:hover {
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(35px);
   }
   to {
     opacity: 1;
@@ -184,8 +199,10 @@ button:hover {
    RESPONSIVE
 ========================= */
 @media (max-width: 600px) {
-  .login-container {
-    margin: 60px 20px;
+  .login-container,
+  .dashboard {
+    margin: 60px 16px;
+    padding: 25px;
   }
 
   .dashboard h1 {
