@@ -37,6 +37,13 @@ button{cursor:pointer}
 .hapus-btn{background:#e74c3c;color:#fff;border:none;padding:5px 10px;border-radius:5px;font-size:0.8rem;cursor:pointer;margin-left:10px}
 .hapus-btn:hover{background:#c0392b}
 
+/* TOMBOL MENARIK */
+.btn-menarik{background:linear-gradient(45deg,#ff8c42,#ff6b35);color:#fff;border:none;padding:12px 24px;border-radius:25px;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s ease; box-shadow:0 4px 15px rgba(255,140,66,0.4);position:relative;overflow:hidden}
+.btn-menarik::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s}
+.btn-menarik:hover::before{left:100%}
+.btn-menarik:hover{background:linear-gradient(45deg,#ff6b35,#e55a2b);transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,140,66,0.6)}
+.btn-menarik:active{transform:translateY(0);box-shadow:0 2px 10px rgba(255,140,66,0.4)}
+
 /* TUGAS MENARIK */
 .tugas-card{background:#f9f9f9;border:1px solid #ddd;border-radius:10px;padding:1rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.5rem}
 .tugas-mapel{font-weight:700;color:#ff8c42;font-size:1.1rem}
@@ -87,11 +94,11 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   <h2>Tambah Siswa</h2>
   <input id="namaBaru" placeholder="Nama Lengkap">
   <input id="absenBaru" type="number" placeholder="Nomor Absen">
-  <button id="btnTambahSiswa">Tambah</button>
+  <button id="btnTambahSiswa" class="btn-menarik">➕ Tambah Siswa</button>
   <h2>Ubah Absen Siswa</h2>
   <input id="absenLama" type="number" placeholder="Absen Lama">
   <input id="absenBaruAdmin" type="number" placeholder="Absen Baru">
-  <button id="btnUbahAbsen">Ubah Absen</button>
+  <button id="btnUbahAbsen" class="btn-menarik">🔄 Ubah Absen</button>
 </div>
 
 <div class="card">
@@ -107,7 +114,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     <input id="mapelBaru" placeholder="Mata Pelajaran (e.g., Matematika)">
     <input id="tugasBaru" placeholder="Deskripsi Tugas">
     <input id="deadlineBaru" type="date">
-    <button id="btnTambahTugas">Tambah Tugas</button>
+    <button id="btnTambahTugas" class="btn-menarik">📝 Tambah Tugas</button>
   </div>
 </div>
 
@@ -253,21 +260,21 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     };
 
     /* ADMIN */
-    const adminPanel = document.getElementById("adminPanel");
-    const tambahTugasPanel = document.getElementById("tambahTugasPanel");
-    if(role==="admin"){
-      adminPanel.style.display="block";
-      tambahTugasPanel.style.display="block";
-      editProfilBtn.style.display = "none"; // Admin tidak edit profil
-      console.log("Panel admin dan tugas ditampilkan untuk role:", role);
-    } else {
-      console.log("Role bukan admin, panel tidak ditampilkan. Role saat ini:", role);
-    }
+const adminPanel = document.getElementById("adminPanel");
+const tambahTugasPanel = document.getElementById("tambahTugasPanel");
+if(role==="admin"){
+  adminPanel.style.display="block";
+  tambahTugasPanel.style.display="block";
+  editProfilBtn.style.display = "none"; // Admin tidak edit profil
+  console.log("Panel admin dan tugas ditampilkan untuk role:", role);
+} else {
+  console.log("Role bukan admin, panel tidak ditampilkan. Role saat ini:", role);
+}
 
-    /* SISWA DATA (untuk login, tapi tidak ditampilkan) */
-    let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [];
-    
-   /* JADWAL MENARIK */
+/* SISWA DATA (untuk login, tapi tidak ditampilkan) */
+let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [];
+
+/* JADWAL MENARIK */
 const jadwalData = [
  { hari: "Senin", mataPelajaran: "PKWU", waktu: "08:15 - 09:45" },
   { hari: "Senin", mataPelajaran: "Kimia", waktu: "10:15 - 11:40" },
@@ -466,5 +473,6 @@ btnUbahAbsen.addEventListener("click", function() {
 
 </body>
 </html>
+
 
 
