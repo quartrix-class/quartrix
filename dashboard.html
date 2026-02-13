@@ -268,13 +268,39 @@ let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [
 
 /* ================= DATA JADWAL ================= */
 let jadwalData = JSON.parse(localStorage.getItem("jadwalData")) || [
-  { hari: "Senin", mataPelajaran: "Matematika", waktu: "08:00-09:00" },
-  { hari: "Senin", mataPelajaran: "Bahasa Indonesia", waktu: "09:00-10:00" },
-  { hari: "Selasa", mataPelajaran: "IPA", waktu: "08:00-09:00" },
-  { hari: "Selasa", mataPelajaran: "IPS", waktu: "09:00-10:00" },
-  { hari: "Rabu", mataPelajaran: "Bahasa Inggris", waktu: "08:00-09:00" },
-  { hari: "Rabu", mataPelajaran: "Seni Budaya", waktu: "09:00-10:00" }
+  // ===== SENIN =====
+  { hari: "Senin", mataPelajaran: "PKWU", waktu: "08:15 - 09:45" },
+  { hari: "Senin", mataPelajaran: "Kimia", waktu: "10:15 - 11:40" },
+  { hari: "Senin", mataPelajaran: "Matematika Minat", waktu: "12:30 - 13:50" },
+  { hari: "Senin", mataPelajaran: "Sejarah", waktu: "13:50 - 15:00" },
+
+  // ===== SELASA =====
+  { hari: "Selasa", mataPelajaran: "Bimbingan Konseling", waktu: "07:00 - 07:40" },
+  { hari: "Selasa", mataPelajaran: "Matematika Wajib", waktu: "07:40 - 09:00" },
+  { hari: "Selasa", mataPelajaran: "Penjaskes", waktu: "09:00 - 11:30" },
+  { hari: "Selasa", mataPelajaran: "Fisika", waktu: "12:20 - 13:40" },
+  { hari: "Selasa", mataPelajaran: "Bahasa Inggris", waktu: "13:40 - 15:00" },
+
+  // ===== RABU =====
+  { hari: "Rabu", mataPelajaran: "Bahasa Indonesia", waktu: "07:00 - 08:20" },
+  { hari: "Rabu", mataPelajaran: "Matematika Minat", waktu: "08:20 - 09:40" },
+  { hari: "Rabu", mataPelajaran: "Seni Budaya", waktu: "10:10 - 11:30" },
+  { hari: "Rabu", mataPelajaran: "Biologi", waktu: "12:20 - 13:40" },
+  { hari: "Rabu", mataPelajaran: "Fisika", waktu: "13:40 - 15:00" },
+
+  // ===== KAMIS =====
+  { hari: "Kamis", mataPelajaran: "Bahasa Jawa", waktu: "07:00 - 07:40" },
+  { hari: "Kamis", mataPelajaran: "Kimia", waktu: "07:40 - 09:40" },
+  { hari: "Kamis", mataPelajaran: "Biologi", waktu: "10:10 - 10:50" },
+  { hari: "Kamis", mataPelajaran: "Agama", waktu: "12:20 - 13:40" },
+  { hari: "Kamis", mataPelajaran: "Bahasa Indonesia", waktu: "13:40 - 15:00" },
+
+  // ===== JUMAT =====
+  { hari: "Jumat", mataPelajaran: "Matematika Wajib", waktu: "07:00 - 08:30" },
+  { hari: "Jumat", mataPelajaran: "BMQ", waktu: "08:30 - 09:15" },
+  { hari: "Jumat", mataPelajaran: "PPKn", waktu: "09:45 - 11:15" }
 ];
+
 
 /* ================= DATA TUGAS ================= */
 let tugasData = JSON.parse(localStorage.getItem("tugasData")) || [
@@ -405,4 +431,5 @@ function logout() {
 
 </body>
 </html>
+
 
