@@ -67,11 +67,6 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   </div>
 </div>
 
-<div class="card">
-  <h2>Daftar Siswa</h2>
-  <ul id="siswaList"></ul>
-</div>
-
 </main>
 
 <footer>&copy; 2025 QUARTRIX</footer>
@@ -94,19 +89,8 @@ if(role==="admin"){
   tambahTugasPanel.style.display="block";
 }
 
-/* SISWA */
+/* SISWA DATA (untuk login, tapi tidak ditampilkan) */
 let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [];
-function renderSiswa(){
-  siswaList.innerHTML="";
-  siswaData.sort((a,b)=>a.absen-b.absen);
-  siswaData.forEach(s=>{
-    const li=document.createElement("li");
-    li.textContent=`Absen ${s.absen} — ${s.nama}`;
-    siswaList.appendChild(li);
-  });
-  localStorage.setItem("siswaData",JSON.stringify(siswaData));
-}
-renderSiswa();
 
 /* JADWAL */
 const jadwalData = [
@@ -177,19 +161,22 @@ function renderTugas(){
 renderTugas();
 
 function tambahTugas(){
+  if(role !== "admin") return;
   tugasData.push({
     deskripsi:tugasBaru.value,
     deadline:deadlineBaru.value
   });
   tugasBaru.value="";deadlineBaru.value="";
   renderTugas();
+  alert("Tugas berhasil dipublish kepada semua siswa!");
 }
 
 /* TAMBAH SISWA */
 function tambahSiswa(){
   siswaData.push({nama:namaBaru.value.toUpperCase(),absen:+absenBaru.value});
   namaBaru.value="";absenBaru.value="";
-  renderSiswa();
+  localStorage.setItem("siswaData",JSON.stringify(siswaData));
+  alert("Siswa berhasil ditambahkan!");
 }
 
 /* LOGOUT */
