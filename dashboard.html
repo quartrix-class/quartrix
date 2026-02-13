@@ -164,6 +164,15 @@ function renderTugas(){
 }
 renderTugas(); // Pastikan dipanggil
 
+// Polling untuk update real-time tugas (check setiap 1 detik)
+setInterval(() => {
+  const newTugas = JSON.parse(localStorage.getItem("tugasData")) || [];
+  if (JSON.stringify(newTugas) !== JSON.stringify(tugasData)) {
+    tugasData = newTugas;
+    renderTugas();
+  }
+}, 1000);
+
 function tambahTugas(){
   if(role !== "admin") return;
   const desc = tugasBaru.value.trim();
