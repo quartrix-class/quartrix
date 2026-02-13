@@ -18,11 +18,16 @@ main{max-width:1000px;margin:auto;padding:2rem;flex:1}
 ul{list-style:none}
 li{padding:10px;border-bottom:1px solid #ddd;font-weight:600;display:flex;justify-content:space-between;align-items:center}
 
-/* JADWAL */
+/* JADWAL MENARIK */
 #jadwalButtons{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
 .hari-btn{background:#ff8c42;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer}
 .hari-btn.active{background:#3e2c23}
-#jadwalDetail li{border-left:4px solid #ff8c42;padding-left:12px}
+#jadwalDetail{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:1rem}
+.jadwal-card{background:#f9f9f9;border:1px solid #ddd;border-radius:10px;padding:1rem;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.1);transition:transform 0.3s}
+.jadwal-card:hover{transform:translateY(-5px)}
+.jadwal-mapel{font-weight:700;color:#ff8c42;font-size:1.1rem;margin-bottom:0.5rem}
+.jadwal-waktu{color:#666;font-size:0.9rem;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.jadwal-waktu::before{content:'⏰';font-size:1rem}
 
 /* ADMIN */
 #adminPanel input,#tambahTugasPanel input{
@@ -63,7 +68,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 <div class="card">
   <h2>Jadwal Pelajaran</h2>
   <div id="jadwalButtons"></div>
-  <ul id="jadwalDetail"></ul>
+  <div id="jadwalDetail"></div>
 </div>
 
 <div class="card">
@@ -140,7 +145,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     /* SISWA DATA (untuk login, tapi tidak ditampilkan) */
     let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [];
 
-    /* JADWAL */
+    /* JADWAL MENARIK */
     const jadwalData = [
      { hari: "Senin", mataPelajaran: "PKWU", waktu: "08:15 - 09:45" },
       { hari: "Senin", mataPelajaran: "Kimia", waktu: "10:15 - 11:40" },
@@ -187,9 +192,13 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       jadwalData
         .filter(j => j.hari === hari)
         .forEach(j => {
-          const li = document.createElement("li");
-          li.textContent = `${j.mataPelajaran} (${j.waktu})`;
-          jadwalDetail.appendChild(li);
+          const card = document.createElement("div");
+          card.className = "jadwal-card";
+          card.innerHTML = `
+            <div class="jadwal-mapel">${j.mataPelajaran}</div>
+            <div class="jadwal-waktu">${j.waktu}</div>
+          `;
+          jadwalDetail.appendChild(card);
         });
     }
 
