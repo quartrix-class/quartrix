@@ -34,50 +34,112 @@
 </div>
 
 <script>
+<script>
+/* ===============================
+   CEK LOGIN
+================================ */
 const role = localStorage.getItem("role");
+const namaLogin = localStorage.getItem("nama");
+const absenLogin = localStorage.getItem("absen");
 
-if (!role) {
+if (!role || !namaLogin || !absenLogin) {
   window.location.href = "login.html";
 }
 
-roleText.innerText = "Role: " + role.toUpperCase();
+/* ===============================
+   ELEMENT
+================================ */
+const info = document.getElementById("info");
+const adminPanel = document.getElementById("adminPanel");
+const siswaList = document.getElementById("siswaList");
 
+/* ===============================
+   DATA SISWA (DEFAULT)
+================================ */
+let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [
+  { nama: "AGUSTINE DYAH AYU RAHMADANI", absen: 1 },
+  { nama: "AHMAD FAISHAL ZAUMAR", absen: 2 },
+  { nama: "ALANA GEIZEL FAEDAH ALAM", absen: 3 },
+  { nama: "ALYA NAFEEZA AZZAHRO", absen: 4 },
+  { nama: "ANNISA PRIMADITA MUSAFA", absen: 5 },
+  { nama: "ARYA ISSYA MAHENDRA", absen: 6 },
+  { nama: "BERLIANA FAIRUZ IZDIHAR", absen: 7 }
+];
+
+/* ===============================
+   TAMPILKAN INFO USER
+================================ */
 if (role === "admin") {
-  adminPanel.classList.remove("hidden");
-  info.innerText = "Anda login sebagai ADMIN";
+  info.innerText = "Login sebagai ADMIN";
+  adminPanel.style.display = "block";
 } else {
-  info.innerText = "Anda login sebagai SISWA (read-only)";
+  info.innerText =
+    "Selamat datang, " +
+    namaLogin +
+    " (Absen " +
+    absenLogin +
+    ")";
 }
 
-function logout(){
+/* ===============================
+   RENDER SISWA
+================================ */
+function renderSiswa() {
+  siswaList.innerHTML = "";
+
+  siswaData.sort((a, b) => a.absen - b.absen);
+
+  siswaData.forEach((s) => {
+    const li = document.createElement("li");
+    li.innerText = "Absen " + s.absen + " - " + s.nama;
+    siswaList.appendChild(li);
+  });
+
+  localStorage.setItem("siswaData", JSON.stringify(siswaData));
+}
+
+renderSiswa();
+
+/* ===============================
+   TAMBAH SISWA (ADMIN)
+================================ */
+function tambahSiswa() {
+  const nama = document.getElementById("namaBaru").value.trim();
+  const absen = document.getElementById("absenBaru").value.trim();
+
+  if (!nama || !absen) {
+    alert("Nama dan absen wajib diisi!");
+    return;
+  }
+
+  if (siswaData.some(s => s.absen == absen)) {
+    alert("Absen sudah digunakan!");
+    return;
+  }
+
+  siswaData.push({
+    nama: nama.toUpperCase(),
+    absen: Number(absen)
+  });
+
+  document.getElementById("namaBaru").value = "";
+  document.getElementById("absenBaru").value = "";
+
+  renderSiswa();
+}
+
+/* ===============================
+   LOGOUT
+================================ */
+function logout() {
   localStorage.clear();
   window.location.href = "login.html";
 }
-
-function tambahSiswa(){
-  let data = JSON.parse(localStorage.getItem("siswa")) || [];
-
-  data.push({
-    nama: nama.value,
-    foto: foto.value
-  });
-
-  localStorage.setItem("siswa", JSON.stringify(data));
-  alert("Siswa berhasil ditambahkan ✅");
-  nama.value = "";
-  foto.value = "";
-}
-  if (role === "siswa") {
-  info.innerText =
-    "Selamat datang, " +
-    localStorage.getItem("nama") +
-    " (Absen " +
-    localStorage.getItem("absen") +
-    ")";
-}
+</script>
 
 </script>
 
 </body>
 </html>
+
 
