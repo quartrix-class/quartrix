@@ -113,15 +113,40 @@ function tambahSiswa() {
   const nama = document.getElementById("namaBaru").value.trim().toUpperCase();
   const absen = document.getElementById("absenBaru").value.trim();
 
-  if (!nama || !absen) return alert("Lengkapi data");
-  if (siswaData.some(s => s.absen == absen)) return alert("Absen sudah ada");
+  if (!nama || !absen) {
+    alert("Nama dan absen wajib diisi");
+    return;
+  }
 
-  siswaData.push({ nama, absen:Number(absen) });
-  akunData.push({ nama, absen, role:"siswa" });
+  if (siswaData.some(s => s.absen == absen)) {
+    alert("Absen sudah ada");
+    return;
+  }
+
+  // 1️⃣ masuk ke daftar siswa (buat tampilan)
+  siswaData.push({
+    nama: nama,
+    absen: Number(absen)
+  });
+
+  // 2️⃣ masuk ke akun login (INI YANG TADI KURANG)
+  akunData.push({
+    nama: nama,
+    absen: absen,
+    role: "siswa"
+  });
+
+  // simpan
+  localStorage.setItem("siswaData", JSON.stringify(siswaData));
+  localStorage.setItem("akunData", JSON.stringify(akunData));
+
+  document.getElementById("namaBaru").value = "";
+  document.getElementById("absenBaru").value = "";
 
   renderSiswa();
-  alert("Siswa berhasil ditambahkan");
+  alert("Siswa berhasil ditambahkan & bisa login");
 }
+
 
 /* LOGOUT */
 function logout() {
@@ -132,3 +157,4 @@ function logout() {
 
 </body>
 </html>
+
