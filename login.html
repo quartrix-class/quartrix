@@ -28,32 +28,40 @@ const adminAccount = {
   password: "quartrix123"
 };
 
+const siswa = [
+  { nama: "Ahmad Rizki Pratama", absen: "1" },
+  { nama: "Bima Alvaro Putra", absen: "2" },
+  { nama: "Citra Ayu Lestari", absen: "3" }
+];
+
 function login() {
-  const user = username.value.trim();
+  const user = username.value.trim().toLowerCase();
   const pass = password.value.trim();
 
+  /* LOGIN ADMIN */
   if (user === adminAccount.username && pass === adminAccount.password) {
     localStorage.setItem("role", "admin");
     window.location.href = "dashboard.html";
     return;
   }
 
-  // login siswa → username = nomor absen, password = siswa
-  if (!isNaN(user) && pass === "siswa") {
+  /* LOGIN SISWA */
+  const found = siswa.find(
+    s => s.nama.toLowerCase() === user && s.absen === pass
+  );
+
+  if (found) {
     localStorage.setItem("role", "siswa");
-    localStorage.setItem("absen", user);
+    localStorage.setItem("nama", found.nama);
+    localStorage.setItem("absen", found.absen);
     window.location.href = "dashboard.html";
     return;
   }
 
-  alert("Login gagal ❌");
-}
-
-function fillAdmin(){
-  username.value = "admin";
-  password.value = "quartrix123";
+  alert("Nama atau absen salah ❌");
 }
 </script>
 
 </body>
 </html>
+
