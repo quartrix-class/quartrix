@@ -353,7 +353,7 @@ let tugasData = JSON.parse(localStorage.getItem("tugasData")) || [
 const info = document.getElementById("info");
 const adminPanel = document.getElementById("adminPanel");
 const siswaList = document.getElementById("siswaList");
-const jadwalList = document.getElementById("jadwalList");
+const jadwalTable = document.getElementById("jadwalTable");
 const tugasList = document.getElementById("tugasList");
 const tambahTugasPanel = document.getElementById("tambahTugasPanel");
 
@@ -384,11 +384,21 @@ renderSiswa();
 
 /* ================= RENDER JADWAL ================= */
 function renderJadwal() {
-  jadwalList.innerHTML = "";
+  jadwalTable.innerHTML = `
+    <tr>
+      <th>Hari</th>
+      <th>Mata Pelajaran</th>
+      <th>Waktu</th>
+    </tr>
+  `;
   jadwalData.forEach(j => {
-    const li = document.createElement("li");
-    li.innerText = `${j.hari} — ${j.mataPelajaran} (${j.waktu})`;
-    jadwalList.appendChild(li);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${j.hari}</td>
+      <td>${j.mataPelajaran}</td>
+      <td>${j.waktu}</td>
+    `;
+    jadwalTable.appendChild(tr);
   });
 
   localStorage.setItem("jadwalData", JSON.stringify(jadwalData));
@@ -472,6 +482,3 @@ function logout() {
 
 </body>
 </html>
-
-
-
