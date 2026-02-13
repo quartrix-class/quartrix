@@ -69,7 +69,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
 <div class="card">
   <div id="info">
-    <img id="profilFoto" src="https://via.placeholder.com/50" alt="Foto Profil" class="profil-foto">
+    <img id="profilFoto" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNmZmY1ZTYiLz4KPHBhdGggZD0iTTI1IDI1QzI3LjIgMjUgMjkgMjIuMiAyOSAyMEMyOSAxNy44IDI3LjIgMTYgMjUgMTZDMTYuOCAxNiAxNSAxNy44IDE1IDIwQzE1IDIyLjIgMTYuOCAyNSAyNSAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPHBhdGggZD0iTTMwIDI1QzMwIDI4LjMgMjcuMyAzMSAyNSAzMUMyMi43IDMxIDIwIDI4LjMgMjAgMjVDMjAgMjEuNyAyMi43IDE5IDI1IDE5QzI3LjMgMTkgMzAgMjEuNyAzMCAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPC9zdmc+" alt="Foto Profil" class="profil-foto">
     <span id="infoText"></span>
     <button id="editProfilBtn" class="edit-profil-btn">Edit Profil</button>
   </div>
@@ -157,7 +157,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     if(!role) location.href="login.html";
 
     /* PROFIL */
-    let profilData = { nama: nama, absen: absen, fotoURL: "https://via.placeholder.com/50" };
+    let profilData = { nama: nama, absen: absen, fotoURL: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNmZmY1ZTYiLz4KPHBhdGggZD0iTTI1IDI1QzI3LjIgMjUgMjkgMjIuMiAyOSAyMEMyOSAxNy44IDI3LjIgMTYgMjUgMTZDMTYuOCAxNiAxNSAxNy44IDE1IDIwQzE1IDIyLjIgMTYuOCAyNSAyNSAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPHBhdGggZD0iTTMwIDI1QzMwIDI4LjMgMjcuMyAzMSAyNSAzMUMyMi43IDMxIDIwIDI4LjMgMjAgMjVDMjAgMjEuNyAyMi43IDE5IDI1IDE5QzI3LjMgMTkgMzAgMjEuNyAzMCAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPC9zdmc+" };
     const profilRef = ref(db, 'siswa/' + absen);
 
     // Load profil dari Firebase
@@ -196,9 +196,15 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
       let fotoURL = profilData.fotoURL;
       if(fotoFile) {
-        const fotoRef = storageRef(storage, 'profil/' + absen + '.jpg');
-        await uploadBytes(fotoRef, fotoFile);
-        fotoURL = await getDownloadURL(fotoRef);
+        try {
+          const fotoRef = storageRef(storage, 'profil/' + absen + '.jpg');
+          await uploadBytes(fotoRef, fotoFile);
+          fotoURL = await getDownloadURL(fotoRef);
+        } catch (error) {
+          console.error("Error upload foto:", error);
+          alert("Gagal upload foto. Coba lagi atau gunakan foto lain.");
+          return;
+        }
       }
 
       profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
@@ -248,7 +254,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       { hari: "Jumat", mataPelajaran: "BMQ", waktu: "08:30 - 09:15" },
       { hari: "Jumat", mataPelajaran: "PPKn", waktu: "09:45 - 11:15" }
     ];
-
+    
     const hariList = [...new Set(jadwalData.map(j => j.hari))]; 
     // Ambil daftar hari unik: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"]
 
@@ -387,4 +393,5 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
 </body>
 </html>
+
 
