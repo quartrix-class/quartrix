@@ -71,6 +71,38 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
 <footer>&copy; 2025 QUARTRIX</footer>
 
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+  // Config Firebase Anda
+  const firebaseConfig = {
+    apiKey: "AIzaSyCP-Gha19gZ6ZkYCzZ9vh9QL2tKYmNVoCk",
+    authDomain: "quartrix-eb95f.firebaseapp.com",
+    databaseURL: "https://quartrix-eb95f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "quartrix-eb95f",
+    storageBucket: "quartrix-eb95f.firebasestorage.app",
+    messagingSenderId: "589369640106",
+    appId: "1:589369640106:web:7239da0bd98bae284fbcd3",
+    measurementId: "G-HG1GL8D03G"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const auth = getAuth(app);
+
+  // Login anonymous secara otomatis
+  signInAnonymously(auth)
+    .then(() => {
+      console.log("Anonymous login berhasil");
+    })
+    .catch((error) => {
+      console.error("Error anonymous login:", error);
+    });
+</script>
+
 <script>
 /* LOGIN */
 const role = localStorage.getItem("role");
@@ -147,11 +179,8 @@ function tampilJadwal(hari, btn) {
 tampilJadwal(hariList[0], jadwalButtons.children[0]);
 
 
-/* TUGAS */
-let tugasData = JSON.parse(localStorage.getItem("tugasData")) || [
-  { deskripsi: "Kerjakan soal matematika halaman 50", deadline: "2025-01-15" },
-  { deskripsi: "Buat resume buku yang dibaca", deadline: "2025-01-20" }
-]; // Tambahkan tugas default untuk testing
+/* TUGAS - Menggunakan Firebase */
+let tugasData = [];
 
 function renderTugas(){
   tugasList.innerHTML="";
@@ -160,30 +189,27 @@ function renderTugas(){
     li.textContent=`${t.deskripsi} — ${t.deadline}`;
     tugasList.appendChild(li);
   });
-  localStorage.setItem("tugasData",JSON.stringify(tugasData));
 }
-renderTugas(); // Pastikan dipanggil
 
-// Polling untuk update real-time tugas (check setiap 1 detik)
-setInterval(() => {
-  const newTugas = JSON.parse(localStorage.getItem("tugasData")) || [];
-  if (JSON.stringify(newTugas) !== JSON.stringify(tugasData)) {
-    tugasData = newTugas;
-    renderTugas();
-  }
-}, 1000);
+// Listen untuk perubahan real-time dari Firebase
+const tugasRef = ref(db, 'tugas');
+onValue(tugasRef, (snapshot) => {
+  const data = snapshot.val();
+  tugasData = data ? Object.values(data) : [];
+  renderTugas();
+});
 
 function tambahTugas(){
   if(role !== "admin") return;
   const desc = tugasBaru.value.trim();
   const dead = deadlineBaru.value;
   if(!desc || !dead) return alert("Isi semua field!");
-  tugasData.push({
+  const newTugasRef = push(tugasRef);
+  set(newTugasRef, {
     deskripsi: desc,
     deadline: dead
   });
   tugasBaru.value="";deadlineBaru.value="";
-  renderTugas();
   alert("Tugas berhasil dipublish kepada semua siswa!");
 }
 
