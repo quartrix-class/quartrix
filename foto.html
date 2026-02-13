@@ -77,24 +77,6 @@
       backdrop-filter: blur(10px);
       border-bottom: 2px solid #fff5e6;
     }
-       /* LOGIN BUTTON */
-.login-btn {
-  padding: 10px 18px;
-  background: linear-gradient(135deg, #ff8c42, #ff6b1a);
-  color: #fff5e6;
-  font-weight: 600;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(255,140,66,0.5);
-  transition: all 0.3s ease;
-  white-space: nowrap;
-}
-
-.login-btn:hover {
-  background: #fff5e6;
-  color: #3e2c23;
-  transform: scale(1.05);
-}
-
     nav.active {
       transform: translateY(0);
       opacity: 1;
@@ -229,45 +211,45 @@
       text-align: center;
     }
     /* SOCIAL MEDIA DI MENU */
-.social-menu {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  border-top: 1px solid rgba(255,245,230,0.4);
-}
+    .social-menu {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      border-top: 1px solid rgba(255,245,230,0.4);
+    }
 
-.social-menu a {
-  width: 44px;
-  height: 44px;
-  background: rgba(255,245,230,0.15);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.3s ease;
-}
+    .social-menu a {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,245,230,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s ease;
+    }
 
-.social-menu a:hover {
-  background: #fff5e6;
-  transform: scale(1.15);
-}
+    .social-menu a:hover {
+      background: #fff5e6;
+      transform: scale(1.15);
+    }
 
-.social-menu img {
-  width: 22px;
-  height: 22px;
-  filter: invert(95%); /* putih */
-}
+    .social-menu img {
+      width: 22px;
+      height: 22px;
+      filter: invert(95%); /* putih */
+    }
 
-.social-menu a:hover img {
-  filter: invert(30%) sepia(80%) saturate(500%) hue-rotate(10deg);
-}
+    .social-menu a:hover img {
+      filter: invert(30%) sepia(80%) saturate(500%) hue-rotate(10deg);
+    }
     /* HILANGKAN SIMBOL DI SAMPING LOGO SOSIAL MEDIA */
-.social-menu a::before {
-  display: none !important;
-  content: none !important;
-}
+    .social-menu a::before {
+      display: none !important;
+      content: none !important;
+    }
 
     .foto-card:hover {
       transform: translateY(-8px);
@@ -352,13 +334,13 @@
     <a href="siswa.html">Siswa</a>
     <a href="struktur.html">Struktur</a>
     <div class="social-menu">
-  <a href="https://www.instagram.com/quartriix/" target="_blank" aria-label="Instagram">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
-  </a>
-  <a href="https://www.tiktok.com/@quartrixasix" target="_blank" aria-label="TikTok">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok">
-  </a>
-</div>
+      <a href="https://www.instagram.com/quartriix/" target="_blank" aria-label="Instagram">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram">
+      </a>
+      <a href="https://www.tiktok.com/@quartrixasix" target="_blank" aria-label="TikTok">
+        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg" alt="TikTok">
+      </a>
+    </div>
   </nav>
 
   <main>
@@ -459,15 +441,15 @@
       hamburger.classList.toggle('active');
       navMenu.classList.toggle('active');
     });
-     // Tambahan: Check login status saat halaman dimuat
+
+    // Check login status saat halaman dimuat
     window.addEventListener('DOMContentLoaded', function() {
-      const isLoggedIn = localStorage.getItem('isLoggedIn');
-      if (!isLoggedIn || isLoggedIn !== 'true') {
+      const isLogin = localStorage.getItem('isLogin');
+      if (!isLogin || isLogin !== 'true') {
         // Jika belum login, redirect ke login.html
         window.location.href = 'login.html';
       }
     });
-    
   </script>
 
 </body>
