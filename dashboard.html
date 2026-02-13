@@ -206,7 +206,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
     /* PROFIL */
     let profilData = { nama: nama, absen: absen, fotoURL: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNmZmY1ZTYiLz4KPHBhdGggZD0iTTI1IDI1QzI3LjIgMjUgMjkgMjIuMiAyOSAyMEMyOSAxNy44IDI3LjIgMTYgMjUgMTZDMTYuOCAxNiAxNSAxNy44IDE1IDIwQzE1IDIyLjIgMTYuOCAyNSAyNSAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPHBhdGggZD0iTTMwIDI1QzMwIDI4LjMgMjcuMyAzMSAyNSAzMUMyMi43IDMxIDIwIDI4LjMgMjAgMjVDMjAgMjEuNyAyMi43IDE5IDI1IDE5QzI3LjMgMTkgMzAgMjEuNyAzMCAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPC9zdmc+" };
-    const profilRef = ref(db, 'siswa/' + nama.replace(/\s+/g, '_')); // Key berdasarkan nama
+    const profilRef = ref(db, "siswa/" + absen); 
 
     // Update UI awal dengan data localStorage
     updateProfilUI();
@@ -264,21 +264,19 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 };
 
 function updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL) {
-  // Update profil Firebase (absen tetap untuk tampilan)
-  profilData = { nama: newNama, absen: newAbsen, fotoURL: fotoURL };
-  set(profilRef, profilData);
-  updateProfilUI();
+  set(ref(db, "siswa/" + newAbsenLogin), {
+    nama: newNama,
+    role: role,
+    fotoURL: fotoURL
+  });
 
-  // Update absen login di localStorage
   localStorage.setItem("absen", newAbsenLogin);
-  localStorage.setItem("nama", newNama); // Update nama juga jika berubah
+  localStorage.setItem("nama", newNama);
 
   closeModal();
   alert("Profil berhasil disimpan!");
-};
+}
 
-/* SISWA DATA (untuk login, tapi tidak ditampilkan) */
-let siswaData = JSON.parse(localStorage.getItem("siswaData")) || [];
 
 /* ADMIN */
 const adminPanel = document.getElementById("adminPanel");
@@ -295,12 +293,26 @@ if(role==="admin"){
 
 function renderDaftarSiswa() {
   const daftarSiswaDiv = document.getElementById("daftarSiswa");
-  daftarSiswaDiv.innerHTML = "<ul>";
-  siswaData.forEach(siswa => {
-    daftarSiswaDiv.innerHTML += `<li><span>Nama: ${siswa.nama}</span> <span>Absen/Password: ${siswa.absen}</span></li>`;
+
+  onValue(ref(db, "siswa"), (snapshot) => {
+    daftarSiswaDiv.innerHTML = "<ul>";
+
+    snapshot.forEach(child => {
+      const absen = child.key;
+      const data = child.val();
+
+      daftarSiswaDiv.innerHTML += `
+        <li>
+          <span>${data.nama}</span>
+          <span>Absen: ${absen}</span>
+        </li>
+      `;
+    });
+
+    daftarSiswaDiv.innerHTML += "</ul>";
   });
-  daftarSiswaDiv.innerHTML += "</ul>";
 }
+
 
 /* JADWAL MENARIK */
 const jadwalData = [
@@ -463,33 +475,49 @@ window.toggleSelesai = (key, checked) => {
 const namaBaru = document.getElementById("namaBaru");
 const absenBaru = document.getElementById("absenBaru");
 const btnTambahSiswa = document.getElementById("btnTambahSiswa");
-btnTambahSiswa.addEventListener("click", function() {
+btnTambahSiswa.addEventListener("click", () => {
   const nama = namaBaru.value.trim().toUpperCase();
-  const abs = +absenBaru.value;
-  if(!nama || !abs) return alert("Isi semua field!");
-  siswaData.push({nama, absen: abs});
-  namaBaru.value="";absenBaru.value="";
-  localStorage.setItem("siswaData",JSON.stringify(siswaData));
-  if(role === "admin") renderDaftarSiswa(); // Update daftar jika admin
-  alert("Siswa berhasil ditambahkan!");
+  const absen = absenBaru.value.trim();
+
+  if (!nama || !absen) return alert("Isi semua field!");
+
+  set(ref(db, "siswa/" + absen), {
+    nama: nama,
+    role: "siswa",
+    fotoURL: ""
+  });
+
+  namaBaru.value = "";
+  absenBaru.value = "";
+  alert("Siswa berhasil ditambahkan ke Firebase!");
 });
+
 
 /* UBAH ABSEN SISWA (ADMIN) */
 const absenLama = document.getElementById("absenLama");
 const absenBaruAdmin = document.getElementById("absenBaruAdmin");
 const btnUbahAbsen = document.getElementById("btnUbahAbsen");
-btnUbahAbsen.addEventListener("click", function() {
+btnUbahAbsen.addEventListener("click", async () => {
   const lama = absenLama.value;
   const baru = absenBaruAdmin.value;
-  if(!lama || !baru) return alert("Isi absen lama dan baru!");
-  // Cari siswa berdasarkan absen lama
-  const siswaIndex = siswaData.findIndex(s => s.absen == lama);
-  if(siswaIndex === -1) return alert("Siswa dengan absen lama tidak ditemukan!");
-  siswaData[siswaIndex].absen = baru;
-  localStorage.setItem("siswaData", JSON.stringify(siswaData));
-  if(role === "admin") renderDaftarSiswa(); // Update daftar jika admin
-  alert("Absen siswa berhasil diubah!");
-  absenLama.value="";absenBaruAdmin.value="";
+
+  if (!lama || !baru) return alert("Isi semua field!");
+
+  const oldRef = ref(db, "siswa/" + lama);
+  const snapshot = await get(oldRef);
+
+  if (!snapshot.exists()) {
+    alert("Siswa tidak ditemukan");
+    return;
+  }
+
+  // pindahkan data
+  await set(ref(db, "siswa/" + baru), snapshot.val());
+  await remove(oldRef);
+
+  alert("Absen berhasil diubah!");
+  absenLama.value = "";
+  absenBaruAdmin.value = "";
 });
 
 /* LOGOUT */
@@ -503,4 +531,5 @@ logoutBtn.addEventListener("click", function() {
 
 </body>
 </html>
+
 
