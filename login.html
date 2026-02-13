@@ -1,38 +1,59 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Login | QUARTRIX</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login - QUARTRIX</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="login-container">
-  <h2>Login Kelas QUARTRIX</h2>
+  <h2>Login QUARTRIX</h2>
 
-  <form id="loginForm">
-    <label>Nama Lengkap</label>
-    <input type="text" id="nama" placeholder="Nama siswa" required>
+  <label>Username / Absen</label>
+  <input type="text" id="username" placeholder="admin / nomor absen">
 
-    <label>Nomor Absen</label>
-    <input type="number" id="absen" placeholder="Contoh: 12" required>
+  <label>Password</label>
+  <input type="password" id="password" placeholder="password">
 
-    <button type="submit">Masuk Kelas</button>
-  </form>
+  <button onclick="login()">Login</button>
 
-  <p class="admin-link" onclick="showAdmin()">Login sebagai Admin</p>
-
-  <form id="adminForm" class="hidden">
-    <label>Username</label>
-    <input type="text" id="adminUser">
-
-    <label>Password</label>
-    <input type="password" id="adminPass">
-
-    <button type="button" onclick="loginAdmin()">Login Admin</button>
-  </form>
+  <div class="admin-link" onclick="fillAdmin()">Login sebagai Admin</div>
 </div>
 
-<script src="login.js"></script>
+<script>
+const adminAccount = {
+  username: "admin",
+  password: "quartrix123"
+};
+
+function login() {
+  const user = username.value.trim();
+  const pass = password.value.trim();
+
+  if (user === adminAccount.username && pass === adminAccount.password) {
+    localStorage.setItem("role", "admin");
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // login siswa → username = nomor absen, password = siswa
+  if (!isNaN(user) && pass === "siswa") {
+    localStorage.setItem("role", "siswa");
+    localStorage.setItem("absen", user);
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  alert("Login gagal ❌");
+}
+
+function fillAdmin(){
+  username.value = "admin";
+  password.value = "quartrix123";
+}
+</script>
+
 </body>
 </html>
