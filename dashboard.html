@@ -37,7 +37,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
 <header>
   <h1><a href="index.html">QUARTRIX</a></h1>
-  <button class="logout" onclick="logout()">Logout</button>
+  <button class="logout">Logout</button>
 </header>
 
 <main>
@@ -48,7 +48,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
   <h2>Tambah Siswa</h2>
   <input id="namaBaru" placeholder="Nama Lengkap">
   <input id="absenBaru" type="number" placeholder="Nomor Absen">
-  <button onclick="tambahSiswa()">Tambah</button>
+  <button id="btnTambahSiswa">Tambah</button>
 </div>
 
 <div class="card">
@@ -208,7 +208,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       console.log("Tugas diperbarui:", tugasData);
     });
 
-    // Event listener untuk tombol
+    // Event listener untuk tombol tambah tugas
     const btnTambahTugas = document.getElementById("btnTambahTugas");
     btnTambahTugas.addEventListener("click", function() {
       console.log("Tombol tambah tugas diklik");
@@ -242,7 +242,8 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     /* TAMBAH SISWA */
     const namaBaru = document.getElementById("namaBaru");
     const absenBaru = document.getElementById("absenBaru");
-    document.querySelector("#adminPanel button").addEventListener("click", function() {
+    const btnTambahSiswa = document.getElementById("btnTambahSiswa");
+    btnTambahSiswa.addEventListener("click", function() {
       const nama = namaBaru.value.trim().toUpperCase();
       const abs = +absenBaru.value;
       if(!nama || !abs) return alert("Isi semua field!");
@@ -253,7 +254,8 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
     });
 
     /* LOGOUT */
-    document.querySelector(".logout").addEventListener("click", function() {
+    const logoutBtn = document.querySelector(".logout");
+    logoutBtn.addEventListener("click", function() {
       localStorage.clear();
       location.href="login.html";
     });
