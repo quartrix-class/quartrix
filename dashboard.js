@@ -7,9 +7,7 @@ if (!role) {
 }
 
 document.getElementById("userInfo").innerText =
-  role === "admin"
-    ? "Admin"
-    : `${nama} (Absen ${absen})`;
+  role === "admin" ? "Admin" : `${nama} (Absen ${absen})`;
 
 document.getElementById("welcomeText").innerText =
   role === "admin"
