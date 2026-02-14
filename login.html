@@ -110,87 +110,71 @@
   </p>
 </div>
 
-<script>
-/* ===============================
-   DATA SISWA
-================================ */
-const siswaData = JSON.parse(localStorage.getItem("siswaData")) || [
-  { nama: "AGUSTINE DYAH AYU RAHMADANI", absen: 1 },
-  { nama: "AHMAD FAISHAL ZAUMAR", absen: 2 },
-  { nama: "ALANA GEIZEL FAEDAH ALAM", absen: 3 },
-  { nama: "ALYA NAFEEZA AZZAHRO", absen: 4 },
-  { nama: "ANNISA PRIMADITA MUSAFA", absen: 5 },
-  { nama: "ARYA ISSYA MAHENDRA", absen: 6 },
-  { nama: "BERLIANA FAIRUZ IZDIHAR", absen: 7 },
-  { nama: "CLEON ADLI DANENDRA OMAN", absen: 8 },
-  { nama: "EIVEL FLORAYSA NADINDA ARDYALOVA", absen: 9 },
-  { nama: "EVELYN GABRIEL ECHA CARERA", absen: 10 },
-  { nama: "EZHAR AIRLANGGA RISTANSYAH", absen: 11 },
-  { nama: "FALIA PUTRI ELLYZA", absen: 12 },
-  { nama: "HANINDIA ASYAWA KAYNAHAYA", absen: 13 },
-  { nama: "HANUNG ELYA PINANDITA", absen: 14 },
-  { nama: "HELMY ARSYAD DARMAWAN", absen: 15 },
-  { nama: "HENDARSO WIRATMOKO", absen: 16 },
-  { nama: "JAGAD CAHYO ADY", absen: 17 },
-  { nama: "JESSICA AFA MARTANIA", absen: 18 },
-  { nama: "KAYLA AMANDA SYAMSAFINA", absen: 19 },
-  { nama: "KEVIN APRILIO", absen: 20 },
-  { nama: "LINTANG YULIDHA PUTRI", absen: 21 },
-  { nama: "MUHAMMAD IBNU KHALDUN ALFAUZI", absen: 22 },
-  { nama: "NABIL MAHIDARA ARTANTO", absen: 23 },
-  { nama: "NABILA KIRANA CANTYA PUTRI", absen: 24 },
-  { nama: "NADIA REYSSA IRVANA PUTRI", absen: 25 },
-  { nama: "NATHANAEL ABIRA SETYO BUDI", absen: 26 },
-  { nama: "NATHANIA NARESWARI BRAHMA PUTRI", absen: 27 },
-  { nama: "NIDA ULHAQ NUR SYIFA", absen: 28 },
-  { nama: "NISRINA MARYAM", absen: 29 },
-  { nama: "PHILLIPUS ADE MAHENDRA PUTRA", absen: 30 },
-  { nama: "PRISYA NOVI ANGGRAENI", absen: 31 },
-  { nama: "RENITA ISNABILA", absen: 32 },
-  { nama: "SEDYO SAKA PRATAMA", absen: 33 },
-  { nama: "SELLA RAHMA YUNANDA", absen: 34 }
-];
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
+  // Config Firebase (sama seperti di dashboard.html)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCP-Gha19gZ6ZkYCzZ9vh9QL2tKYmNVoCk",
+    authDomain: "quartrix-eb95f.firebaseapp.com",
+    databaseURL: "https://quartrix-eb95f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "quartrix-eb95f",
+    storageBucket: "quartrix-eb95f.firebasestorage.app",
+    messagingSenderId: "589369640106",
+    appId: "1:589369640106:web:7239da0bd98bae284fbcd3",
+    measurementId: "G-HG1GL8D03G"
+  };
 
-/* ===============================
-   LOGIN FUNCTION
-================================ */
-function login() {
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const errorMsg = document.getElementById("errorMsg");
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-  errorMsg.style.display = "none";
+  window.login = async () => {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const errorMsg = document.getElementById("errorMsg");
 
-  /* ADMIN */
-  if (username === "admin" && password === "admin123") {
-    localStorage.setItem("isLogin", "true");
-    localStorage.setItem("role", "admin");
-    localStorage.setItem("nama", "ADMIN");
-    localStorage.setItem("absen", "-");
-    window.location.href = "dashboard.html";
-    return;
-  }
+    errorMsg.style.display = "none";
 
-  /* SISWA */
-  const siswa = siswaData.find(
-    s => s.nama === username.toUpperCase() && s.absen == password
-  );
+    /* ADMIN */
+    if (username === "admin" && password === "admin123") {
+      localStorage.setItem("isLogin", "true");
+      localStorage.setItem("role", "admin");
+      localStorage.setItem("nama", "ADMIN");
+      localStorage.setItem("absen", "-");
+      window.location.href = "dashboard.html";
+      return;
+    }
 
-  if (siswa) {
-    localStorage.setItem("isLogin", "true");
-    localStorage.setItem("role", "siswa");
-    localStorage.setItem("nama", siswa.nama);
-    localStorage.setItem("absen", siswa.absen);
-    window.location.href = "dashboard.html";
-  } else {
-    errorMsg.style.display = "block";
-  }
-}
+    /* SISWA - Validasi dengan Firebase */
+    if (!username || !password) {
+      errorMsg.innerText = "Isi nama dan absen!";
+      errorMsg.style.display = "block";
+      return;
+    }
+
+    const userRef = ref(db, "siswa/" + password); // Password adalah absen
+    const snapshot = await get(userRef);
+
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      // Validasi nama (case-insensitive)
+      if (data.nama.toLowerCase() === username.toLowerCase()) {
+        localStorage.setItem("isLogin", "true");
+        localStorage.setItem("role", "siswa");
+        localStorage.setItem("nama", data.nama);
+        localStorage.setItem("absen", password);
+        window.location.href = "dashboard.html";
+      } else {
+        errorMsg.innerText = "Nama tidak cocok dengan absen!";
+        errorMsg.style.display = "block";
+      }
+    } else {
+      errorMsg.innerText = "Absen tidak ditemukan! Pastikan absen sudah terdaftar atau gunakan absen baru jika sudah diubah.";
+      errorMsg.style.display = "block";
+    }
+  };
 </script>
 
 </body>
 </html>
-
-
-
