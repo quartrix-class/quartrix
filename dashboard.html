@@ -276,6 +276,7 @@ hapusFotoBtn.addEventListener("click", () => {
 function updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL) {
   set(ref(db, "siswa/" + newAbsenLogin), {
     nama: newNama,
+    absen: newAbsen,
     role: role,
     fotoURL: fotoURL
   });
@@ -496,6 +497,7 @@ btnTambahSiswa.addEventListener("click", () => {
 
   set(ref(db, "siswa/" + absen), {
     nama: nama,
+    absen: absen,
     role: "siswa",
     fotoURL: ""
   });
@@ -524,6 +526,19 @@ btnUbahAbsen.addEventListener("click", async () => {
     return;
   }
 
+  const dataLama = snapshot.val();
+  // Update absen di objek
+  dataLama.absen = baru;  // Tambahkan ini
+
+  // pindahkan data
+  await set(ref(db, "siswa/" + baru), dataLama);
+  await remove(oldRef);
+
+  alert("Absen berhasil diubah!");
+  absenLama.value = "";
+  absenBaruAdmin.value = "";
+});
+
   // pindahkan data
   await set(ref(db, "siswa/" + baru), snapshot.val());
   await remove(oldRef);
@@ -544,4 +559,5 @@ logoutBtn.addEventListener("click", function() {
 
 </body>
 </html>
+
 
