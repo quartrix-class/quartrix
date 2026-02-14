@@ -1,18 +1,23 @@
 // login.js - Kode diperbarui untuk menggunakan Firebase dan mendukung ganti absen login
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
 
 // Config Firebase (sama seperti di dashboard.html)
 const firebaseConfig = {
   apiKey: "AIzaSyCP-Gha19gZ6ZkYCzZ9vh9QL2tKYmNVoCk",
   authDomain: "quartrix-eb95f.firebaseapp.com",
-  databaseURL: "https://quartrix-eb95f-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL:
+    "https://quartrix-eb95f-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "quartrix-eb95f",
   storageBucket: "quartrix-eb95f.firebasestorage.app",
   messagingSenderId: "589369640106",
   appId: "1:589369640106:web:7239da0bd98bae284fbcd3",
-  measurementId: "G-HG1GL8D03G"
+  measurementId: "G-HG1GL8D03G",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -50,7 +55,9 @@ loginForm.addEventListener("submit", async function (e) {
       alert("Nama tidak cocok dengan absen!");
     }
   } else {
-    alert("Absen tidak ditemukan! Pastikan absen sudah terdaftar atau gunakan absen baru jika sudah diubah.");
+    alert(
+      "Absen tidak ditemukan! Pastikan absen sudah terdaftar atau gunakan absen baru jika sudah diubah.",
+    );
   }
 });
 
