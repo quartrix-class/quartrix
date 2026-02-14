@@ -463,6 +463,7 @@ const tugasList = document.getElementById("tugasList");
 
 function renderTugas(){
   tugasList.innerHTML="";
+  const now = new Date();
   tugasData.forEach((t, index) => {
     const deadlineDate = new Date(t.deadline);
     const isExpired = deadlineDate < now; // Cek jika deadline sudah lewat
@@ -625,5 +626,6 @@ logoutBtn.addEventListener("click", function() {
 
 </body>
 </html>
+
 
 
