@@ -395,25 +395,28 @@ const siswaData = [
   { nama: "SELLA RAHMA YUNANDA", absen: 34 }
 ];
 
+// Ganti bagian btnImportSiswa.addEventListener dengan kode lengkap ini
 const btnImportSiswa = document.getElementById("btnImportSiswa");
-btnImportSiswa.addEventListener("click", async () => {
+btnImportSiswa.addEventListener("click", async () => {  // Pastikan 'async' ada di sini
   if (role !== "admin") return alert("Hanya admin yang bisa import siswa!");
   if (confirm("Apakah Anda yakin ingin import semua 34 siswa? Ini akan menimpa data yang ada.")) {
     for (const siswa of siswaData) {
+      // Cek apakah absen sudah ada
       const existingRef = ref(db, "siswa/" + siswa.absen);
-      const snapshot = await get(existingRef);
+      const snapshot = await get(existingRef);  // Baris ini harus di dalam fungsi async
       if (snapshot.exists()) {
         console.log(`Absen ${siswa.absen} sudah ada, skip import untuk ${siswa.nama}`);
         continue; // Skip jika sudah ada
       }
+      // Jika belum ada, import
       await set(ref(db, "siswa/" + siswa.absen), {
         nama: siswa.nama,
         absen: siswa.absen,
         role: "siswa",
-        fotoURL: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNmZmY1ZTYiLz4KPHBhdGggZD0iTTI1IDI1QzI3LjIgMjUgMjkgMjIuMiAyOSAyMEMyOSAxNy44IDI3LjIgMTYgMjUgMTZDMTYuOCAxNiAxNSAxNy44IDE1IDIwQzE1IDIyLjIgMTYuOCAyNSAyNSAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPHBhdGggZD0iTTMwIDI1QzMwIDI4LjMgMjcuMyAzMSAyNSAzMUMyMi43IDMxIDIwIDI4LjMgMjAgMjVDMjAgMjEuNyAyMi43IDE5IDI1IDE5QzI3LjMgMTkgMzAgMjEuNyAzMCAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPC9zdmc+" // Kosongkan foto, bisa diupload nanti
+        fotoURL: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiNmZmY1ZTYiLz4KPHBhdGggZD0iTTI1IDI1QzI3LjIgMjUgMjkgMjIuMiAyOSAyMEMyOSAxNy44IDI3LjIgMTYgMjUgMTZDMTYuOCAxNiAxNSAxNy44IDE1IDIwQzE1IDIyLjIgMTYuOCAyNSAyNSAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPHBhdGggZD0iTTMwIDI1QzMwIDI4LjMgMjduMyAzMSAyNSAzMUMyMi43IDMxIDIwIDI4LjMgMjAgMjVDMjAgMjEuNyAyMi43IDE5IDI1IDE5QzI3LjMgMTkgMzAgMjEuNyAzMCAyNVoiIGZpbGw9IiMzZTJjMjMiLz4KPC9zdmc+"
       });
     }
-    alert("Semua 34 siswa berhasil diimport ke Firebase!");
+    alert("Import selesai! Siswa dengan absen duplikat dilewati.");
   }
 });
 
@@ -660,6 +663,7 @@ logoutBtn.addEventListener("click", function() {
 
 </body>
 </html>
+
 
 
 
