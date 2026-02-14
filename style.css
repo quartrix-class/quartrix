@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -24,7 +24,7 @@ body {
   margin: 90px auto;
   padding: 30px;
   border-radius: 18px;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
   animation: fadeUp 0.8s ease;
 }
 
@@ -67,7 +67,7 @@ input {
 
 input:focus {
   border-color: #ff8c42;
-  box-shadow: 0 0 0 2px rgba(255,140,66,0.25);
+  box-shadow: 0 0 0 2px rgba(255, 140, 66, 0.25);
 }
 
 /* =========================
@@ -84,7 +84,7 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 6px 18px rgba(255,140,66,0.5);
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.5);
 }
 
 button:hover {
@@ -117,7 +117,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
 }
 
 .navbar span {
@@ -146,7 +146,7 @@ button:hover {
   padding: 35px;
   background: #fff5e6;
   border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
   animation: fadeUp 0.8s ease;
 }
 
@@ -165,7 +165,7 @@ button:hover {
   border-radius: 16px;
   text-decoration: none;
   font-weight: 600;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
   transition: 0.3s;
 }
 
