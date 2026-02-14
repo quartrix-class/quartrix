@@ -200,6 +200,25 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       console.error("Error anonymous login:", error);
     });
 
+    async function hapusTugasDanStatus(tugasKey) {
+  // 1. Hapus tugas utama
+  await remove(ref(db, 'tugas/' + tugasKey));
+
+  // 2. Ambil semua data tugasSelesai
+  const selesaiSnapshot = await get(ref(db, 'tugasSelesai'));
+  if (!selesaiSnapshot.exists()) return;
+
+  const selesaiData = selesaiSnapshot.val();
+
+  // 3. Loop semua siswa
+  for (const absenSiswa in selesaiData) {
+    if (selesaiData[absenSiswa][tugasKey] !== undefined) {
+      await remove(ref(db, `tugasSelesai/${absenSiswa}/${tugasKey}`));
+    }
+  }
+}
+
+
   function initApp() {
     /* LOGIN */
     const role = localStorage.getItem("role");
@@ -517,7 +536,7 @@ function renderTugas(){
 
     // Jika expired, hapus dari Firebase secara otomatis
     if (isExpired) {
-      remove(ref(db, 'tugas/' + tugasKeys[index]));
+      hapusTugasDanStatus(tugasKeys[index]);
       return; // Skip render tugas ini
     }
     
@@ -595,10 +614,10 @@ function tambahTugas(){
 }
 
 function hapusTugas(key) {
-  if(role !== "admin") return;
-  if(confirm("Yakin ingin hapus tugas ini?")) {
-    remove(ref(db, 'tugas/' + key));
-    alert("Tugas berhasil dihapus!");
+  if (role !== "admin") return;
+  if (confirm("Yakin ingin hapus tugas ini?")) {
+    hapusTugasDanStatus(key);
+    alert("Tugas dan data pengerjaan siswa berhasil dihapus!");
   }
 }
 
