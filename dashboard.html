@@ -287,6 +287,11 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
       closeModal();
       alert("Profil berhasil disimpan!");
     }
+    if (newAbsenLogin !== absen) {
+    alert("Absen login telah diubah. Anda akan diarahkan ke halaman login untuk masuk dengan absen baru.");
+    localStorage.clear(); // Hapus semua data login
+    location.href = "login.html"; // Redirect ke login
+  }
 
     /* ADMIN */
     const adminPanel = document.getElementById("adminPanel");
@@ -550,6 +555,7 @@ footer{text-align:center;padding:1rem;background:#3e2c23}
 
 </body>
 </html>
+
 
 
 
