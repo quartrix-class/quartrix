@@ -464,6 +464,15 @@ const tugasList = document.getElementById("tugasList");
 function renderTugas(){
   tugasList.innerHTML="";
   tugasData.forEach((t, index) => {
+    const deadlineDate = new Date(t.deadline);
+    const isExpired = deadlineDate < now; // Cek jika deadline sudah lewat
+
+    // Jika expired, hapus dari Firebase secara otomatis
+    if (isExpired) {
+      remove(ref(db, 'tugas/' + tugasKeys[index]));
+      return; // Skip render tugas ini
+    }
+    
     const card = document.createElement("div");
     card.className = "tugas-card";
     const isSelesai = tugasSelesai[tugasKeys[index]] || false;
@@ -616,4 +625,5 @@ logoutBtn.addEventListener("click", function() {
 
 </body>
 </html>
+
 
