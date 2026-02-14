@@ -276,8 +276,25 @@ window.simpanProfil = async () => {
 };
 
 function updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL) {
-  const oldAbsen = absen; // Simpan absen lama
+  const oldAbsen = absen;
 
+  // Cek apakah absen login baru sudah digunakan (kecuali jika sama dengan lama)
+  if (newAbsenLogin !== oldAbsen) {
+    const newRef = ref(db, "siswa/" + newAbsenLogin);
+    get(newRef).then(snapshot => {
+      if (snapshot.exists()) {
+        alert("Absen login baru sudah digunakan siswa lain! Pilih absen yang belum digunakan.");
+        return;
+      }
+      // Lanjutkan jika tidak ada
+      proceedUpdate(newNama, newAbsen, newAbsenLogin, fotoURL, oldAbsen);
+    });
+  } else {
+    proceedUpdate(newNama, newAbsen, newAbsenLogin, fotoURL, oldAbsen);
+  }
+}
+
+function proceedUpdate(newNama, newAbsen, newAbsenLogin, fotoURL, oldAbsen) {
   set(ref(db, "siswa/" + newAbsenLogin), {
     nama: newNama,
     absen: newAbsen,
@@ -291,9 +308,8 @@ function updateProfil(newNama, newAbsen, newAbsenLogin, fotoURL) {
   closeModal();
   alert("Profil berhasil disimpan!");
 
-  // Jika absen login berubah, hapus data lama dan logout otomatis
   if (newAbsenLogin !== oldAbsen) {
-    remove(ref(db, "siswa/" + oldAbsen)); // Hapus data lama
+    remove(ref(db, "siswa/" + oldAbsen));
     alert("Absen login telah diubah. Anda akan diarahkan ke halaman login untuk masuk dengan absen baru.");
     localStorage.clear();
     location.href = "login.html";
@@ -384,6 +400,12 @@ btnImportSiswa.addEventListener("click", async () => {
   if (role !== "admin") return alert("Hanya admin yang bisa import siswa!");
   if (confirm("Apakah Anda yakin ingin import semua 34 siswa? Ini akan menimpa data yang ada.")) {
     for (const siswa of siswaData) {
+      const existingRef = ref(db, "siswa/" + siswa.absen);
+      const snapshot = await get(existingRef);
+      if (snapshot.exists()) {
+        console.log(`Absen ${siswa.absen} sudah ada, skip import untuk ${siswa.nama}`);
+        continue; // Skip jika sudah ada
+      }
       await set(ref(db, "siswa/" + siswa.absen), {
         nama: siswa.nama,
         absen: siswa.absen,
@@ -572,6 +594,12 @@ btnTambahSiswa.addEventListener("click", () => {
 
   if (!nama || !absen) return alert("Isi semua field!");
 
+  const existingRef = ref(db, "siswa/" + absen);
+  const snapshot = await get(existingRef);
+  if (snapshot.exists()) {
+    return alert("Absen sudah digunakan siswa lain! Pilih absen yang belum digunakan.");
+  }
+
   set(ref(db, "siswa/" + absen), {
     nama: nama,
     absen: absen,
@@ -593,6 +621,12 @@ btnUbahAbsen.addEventListener("click", async () => {
   const baru = absenBaruAdmin.value;
 
   if (!lama || !baru) return alert("Isi semua field!");
+
+  const newRef = ref(db, "siswa/" + baru);
+  const newSnapshot = await get(newRef);
+  if (newSnapshot.exists()) {
+    return alert("Absen baru sudah digunakan siswa lain! Pilih absen yang belum digunakan.");
+  }
 
   const oldRef = ref(db, "siswa/" + lama);
   const snapshot = await get(oldRef);
@@ -626,6 +660,7 @@ logoutBtn.addEventListener("click", function() {
 
 </body>
 </html>
+
 
 
 
